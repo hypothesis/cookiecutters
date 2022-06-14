@@ -1,0 +1,31 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: "{{ cookiecutter.get('__dependabot_interval', 'weekly') }}"
+    day: "sunday"
+    time: "00:00"
+    timezone: "Europe/London"
+{%- if cookiecutter.get("__frontend") == "yes" %}
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: "{{ cookiecutter.get('__dependabot_interval', 'weekly') }}"
+    day: "sunday"
+    time: "00:00"
+    timezone: "Europe/London"
+{%- endif %}
+{%- if cookiecutter.get("__docker") == "yes" %}
+- package-ecosystem: docker
+  directory: "/"
+  schedule:
+    interval: "{{ cookiecutter.get('__dependabot_interval', 'weekly') }}"
+    day: "sunday"
+    time: "00:00"
+    timezone: "Europe/London"
+  ignore:
+    # Only send PRs for patch versions of Python.
+    - dependency-name: "python"
+      update-types: [ "version-update:semver-major", "version-update:semver-minor" ]
+{%- endif %}

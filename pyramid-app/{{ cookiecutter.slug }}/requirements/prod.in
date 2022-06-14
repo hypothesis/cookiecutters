@@ -1,0 +1,4 @@
+pyramid
+gunicorn
+newrelic
+{{- include("requirements/prod.in") }}

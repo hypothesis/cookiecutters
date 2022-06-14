@@ -1,0 +1,3 @@
+pip-tools
+cookiecutter
+{{- include("requirements/template.in") }}

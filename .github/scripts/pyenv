@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#
+# A fake `pyenv exec` that actually just executes commands directly.
+# This is because our Makefile runs `pyenv exec` commands but we don't want to
+# use pyenv on GitHub Actions.
+
+set -euo pipefail
+
+if [ "$1" != "exec" ]; then
+    echo "Fake pyenv only supports pretending to be 'pyenv exec'"
+    exit 1
+fi
+
+exec "${@:2}"

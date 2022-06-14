@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# Test a pypackage cookiecutter by generating a new project in a temporary
+# directory and running the new project's `make sure`.
+#
+# The cookiecutter to be tested should be given as a command line argument
+# along with any options to pass to the cookiecutter, for example:
+#
+#     bin/make_test pypackage python_versions="3.10.4, 3.9.12, 3.8.13"
+set -euo pipefail
+
+export TESTING=yes  # Don't ask interactive questions.
+
+tempdir=$(mktemp -d)
+slug="test-project"
+cookiecutter . --directory "$1" --output-dir "$tempdir" --no-input slug="$slug" "${@:2}"
+cd "$tempdir"/"$slug"
+make -j -O sure
+cd -
+rm -rf "$tempdir"

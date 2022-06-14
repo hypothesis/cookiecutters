@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build": "true",
+    "checkformatting": "true",
+    "format": "true",
+    "lint": "true",
+    "test": "true",
+    "typecheck": "true"
+  }
+}

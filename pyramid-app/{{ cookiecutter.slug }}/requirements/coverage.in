@@ -1,0 +1,3 @@
+pip-tools
+coverage[toml]
+{{- include("requirements/coverage.in") }}
