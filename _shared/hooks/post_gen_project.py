@@ -117,7 +117,7 @@ def runs_successfully(command):
 
 def main():
     cookiecutter = {{ cookiecutter }}
-    target_dir = "{{ cookiecutter.get('__target_dir__') }}"
+    target_dir = cookiecutter.get("__target_dir__")
 
     if target_dir:
         # We are updating an existing project.
@@ -179,11 +179,6 @@ def main():
 
         {% if cookiecutter._directory == 'pyramid-app' -%}
         compile_requirements_files()
-
-        try:
-            symlink("format.txt", "requirements/checkformatting.txt")
-        except FileExistsError:
-            pass
         {%- endif %}
 
         if git_installed():
