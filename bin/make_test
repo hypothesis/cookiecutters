@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# Test a pypackage cookiecutter by generating a new project in a temporary
-# directory and running the new project's `make sure`.
+# Test a cookiecutter by generating a new project in a temporary
+# directory and running the new project's 'make sure'.
 #
 # The cookiecutter to be tested should be given as a command line argument
 # along with any options to pass to the cookiecutter, for example:
