@@ -1,4 +1,4 @@
-{% if cookiecutter.get("public") == "yes" -%}
+{% if cookiecutter.get("visibility") == "public" -%}
 <a href="{{ cookiecutter.__github_url }}/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://img.shields.io/github/workflow/status/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}/CI/main"></a>
 {% endif -%}
 <a href="{{ cookiecutter.__pypi_url }}"><img src="https://img.shields.io/pypi/v/{{ cookiecutter.slug }}"></a>
