@@ -2,6 +2,12 @@ name: CI
 on:
   push:
   workflow_dispatch:
+    inputs:
+      rm_tox_dir:
+        description: 'Delete and recreate cached .tox dir'
+        type: boolean
+        required: true
+        default: false
   {%- if cookiecutter._directory == 'pypackage' %}
   schedule:
   - cron: '0 1 * * *'
@@ -42,13 +48,20 @@ jobs:
           {%- else %}
           python-version: '{{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}'
           {%- endif %}
-
-      {%- if cookiecutter._directory == 'pyramid-app' %}
       - name: Cache the .tox dir
         uses: actions/cache@v3
         with:
           path: .tox
+      {%- if cookiecutter._directory == 'pyramid-app' %}
           key: {{ job }}-{% raw %}${{ runner.os }}-tox-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements/*') }}{% endraw %}
+      {%- else %}
+      {%- if job == 'tests' or job == 'functests' %}
+          key: {{ job }}-{% raw %}${{ runner.os }}-${{ matrix.python-version }}-tox-${{ hashFiles('tox.ini') }}-${{ hashFiles('setup.cfg') }}{% endraw %}
+      {%- else %}
+          key: {{ job }}-{% raw %}${{ runner.os }}-tox-${{ hashFiles('tox.ini') }}-${{ hashFiles('setup.cfg') }}{% endraw %}
+      {%- endif %}
+      {%- endif %}
+      {%- if cookiecutter._directory == 'pyramid-app' %}
           restore-keys: |
             {{ job }}-{% raw %}${{ runner.os }}-tox-{% endraw %}
       {%- endif %}
@@ -67,6 +80,12 @@ jobs:
           name: coverage
       {%- endif %}
       - run: python -m pip install tox
+      - if: github.event.schedule || inputs.rm_tox_dir || endsWith(github.head_ref, '-rm-tox-dir')
+        {%- if job == 'format' %}
+        run: rm -rf .tox/checkformatting
+        {%- else %}
+        run: rm -rf .tox/{{ job }}
+        {%- endif %}
       {%- if job == 'format' %}
       - run: tox -e checkformatting
       {%- else %}
