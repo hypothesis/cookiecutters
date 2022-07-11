@@ -13,7 +13,7 @@ jobs:
     needs: tests
     {%- endif %}
     runs-on: ubuntu-latest
-    {%- if cookiecutter.get("__db") == "yes" %}
+    {%- if cookiecutter.get("db") == "yes" %}
     services:
       postgres:
         image: postgres:11.5-alpine
@@ -52,11 +52,11 @@ jobs:
           restore-keys: |
             {{ job }}-{% raw %}${{ runner.os }}-tox-{% endraw %}
       {%- endif %}
-      {%- if cookiecutter.get("__db") == "yes" %}
+      {%- if cookiecutter.get("db") == "yes" %}
       - name: Create test database
         run: psql -U postgres -h localhost -p 5432 -c 'CREATE DATABASE {{ cookiecutter.package_name }}_test'
       {%- endif %}
-      {%- if cookiecutter.get("__frontend") == "yes" %}
+      {%- if cookiecutter.get("frontend") == "yes" %}
       - run: yarn install --frozen-lockfile
       - run: yarn build
       {%- endif %}
@@ -80,7 +80,7 @@ jobs:
           path: .coverage.*
       {%- endif %}
   {%- endfor %}
-  {%- if cookiecutter.get("__frontend") == "yes" %}
+  {%- if cookiecutter.get("frontend") == "yes" %}
   Frontend:
     runs-on: ubuntu-latest
     steps:

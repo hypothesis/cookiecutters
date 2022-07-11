@@ -9,7 +9,7 @@
     "visibility": ["public", "private"],
     "console_script": ["no", "yes"],
     "create_github_repo": ["no", "yes"],
-    "__dependabot_interval": "weekly",
+    "dependabot_interval": ["monthly", "weekly", "daily"],
     "__entry_point": "{{ cookiecutter.slug }}",
     "__github_url": "https://github.com/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}",
     "__pypi_url": "https://pypi.org/project/{{ cookiecutter.slug }}",

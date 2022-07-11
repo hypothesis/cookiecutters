@@ -45,7 +45,7 @@ make template
 
 Your project contains a `.cookiecutter/cookiecutter.json` file with several
 settings that `make template` uses. For example if you want your app to have
-Docker support `"__docker"` setting to `"yes"` and then re-run `make template`.
+Docker support `"docker"` setting to `"yes"` and then re-run `make template`.
 
 ### `.cookiecutter/includes/`
 

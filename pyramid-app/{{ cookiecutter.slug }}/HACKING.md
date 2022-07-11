@@ -13,7 +13,7 @@ First you'll need to install:
   [use pyenv without shims](https://github.com/pyenv/pyenv#using-pyenv-without-shims).
 * [GNU Make](https://www.gnu.org/software/make/).
   This is probably already installed or will have been installed while installing pyenv, run `make --version` to check.
-{%- if cookiecutter.get("__services") == "yes" %}
+{%- if cookiecutter.get("services") == "yes" %}
 * [Docker](https://docs.docker.com/install/).
   Follow the [instructions on the Docker website](https://docs.docker.com/install/)
   to install it.  
@@ -22,7 +22,7 @@ First you'll need to install:
   You **do** need to set up the `docker` command to work without `sudo`,
   on Linux this means following Docker's [Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/).
 {%- endif %}
-{%- if cookiecutter.get("__frontend") == "yes" %}
+{%- if cookiecutter.get("frontend") == "yes" %}
 * [Node](https://nodejs.org/) and npm.
   On Ubuntu: `sudo snap install --classic node`.
   On macOS: `brew install node`.
