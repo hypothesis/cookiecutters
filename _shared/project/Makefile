@@ -10,7 +10,7 @@ $(call help,make help,print this help message)
 $(call help,make services,start the services that the app needs)
 services: args?=up -d
 services: python
-{%- if cookiecutter.get("__services") == "yes" %}
+{%- if cookiecutter.get("services") == "yes" %}
 	@tox -qe dockercompose -- $(args)
 {%- endif %}
 
@@ -44,7 +44,7 @@ $(call help,make lint,"lint the code and print any warnings")
 lint: python
 	@pyenv exec tox -qe lint
 
-{% if cookiecutter.get("__frontend") == "yes" -%}
+{% if cookiecutter.get("frontend") == "yes" -%}
 .PHONY: frontend-lint
 $(call help,make frontend-lint,"lint the frontend code")
 sure: frontend-lint
@@ -61,7 +61,7 @@ $(call help,make format,"format the code")
 format: python
 	@pyenv exec tox -qe format
 
-{% if cookiecutter.get("__frontend") == "yes" -%}
+{% if cookiecutter.get("frontend") == "yes" -%}
 .PHONY: frontend-format
 $(call help,make frontend-format,"format the frontend code")
 frontend-format:
@@ -74,7 +74,7 @@ $(call help,make checkformatting,"crash if the code isn't correctly formatted")
 checkformatting: python
 	@pyenv exec tox -qe checkformatting
 
-{% if cookiecutter.get("__frontend") == "yes" -%}
+{% if cookiecutter.get("frontend") == "yes" -%}
 .PHONY: frontend-checkformatting
 sure: frontend-checkformatting
 $(call help,make frontend-checkformatting,"check the frontend code formatting")
@@ -89,7 +89,7 @@ coverage: test
 test: python
 	@pyenv exec tox -qe tests
 
-{%- if cookiecutter.get("__frontend") == "yes" %}
+{%- if cookiecutter.get("frontend") == "yes" %}
 
 .PHONY: frontend-test
 sure: frontend-test
@@ -183,7 +183,7 @@ $(call help,make template,"update from the latest cookiecutter template")
 template: python
 	@pyenv exec tox -e template -- $$(if [ -n "$${template+x}" ]; then echo "--template $$template"; fi) $$(if [ -n "$${checkout+x}" ]; then echo "--checkout $$checkout"; fi)
 
-{% if cookiecutter.get("__docker") == "yes" -%}
+{% if cookiecutter.get("docker") == "yes" -%}
 DOCKER_TAG = dev
 
 .PHONY: docker
@@ -196,7 +196,7 @@ $(call help,make docker-run,"run the app's docker image")
 docker-run:
 	@docker run \
 		--add-host host.docker.internal:host-gateway \
-{%- if cookiecutter.get("__services") == "yes" %}
+{%- if cookiecutter.get("services") == "yes" %}
 		--net {{ cookiecutter.__docker_network }} \
 {%- endif %}
 		--env-file .docker.env \
@@ -214,7 +214,7 @@ clean:
 	@find . -path '*.egg-info*' -delete
 {{- include("make_clean") }}
 
-{% if cookiecutter.get("__frontend") == "yes" -%}
+{% if cookiecutter.get("frontend") == "yes" -%}
 dev: build/manifest.json
 devdata: build/manifest.json
 shell: build/manifest.json
