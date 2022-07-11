@@ -2,7 +2,7 @@
     "name": "My Python Package",
     "package_name": "{{ cookiecutter.name.lower().replace(' ', '_').replace('-', '_') }}",
     "slug": "{{ cookiecutter.package_name.replace('_', '-') }}",
-    "short_description": null,
+    "short_description": "An installable Python package.",
     "python_versions": "3.10.4, 3.9.12, 3.8.13",
     "github_owner": "hypothesis",
     "copyright_holder": "Hypothesis",
