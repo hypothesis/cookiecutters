@@ -8,6 +8,7 @@
     "copyright_holder": "Hypothesis",
     "public": "yes",
     "console_script": "no",
+    "create_github_repo": "no",
     "__dependabot_interval": "weekly",
     "__entry_point": "{{ cookiecutter.slug }}",
     "__github_url": "https://github.com/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}",
