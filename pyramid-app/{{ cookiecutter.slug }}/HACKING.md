@@ -75,7 +75,8 @@ Changing the Project's Python Dependencies
 
 ### To Add a New Dependency
 
-Add the dependency to the appropriate `requirements/*.in` file(s) and then run:
+Add the package to the appropriate [`requirements/*.in`](requirements/)
+file(s) and then run:
 
 ```terminal
 make requirements
@@ -83,7 +84,8 @@ make requirements
 
 ### To Remove a Dependency
 
-Remove the dependency from the appropriate `requirements/*.in` file(s) and then run:
+Remove the package from the appropriate [`requirements/*.in`](requirements)
+file(s) and then run:
 
 ```terminal
 make requirements
@@ -91,34 +93,25 @@ make requirements
 
 ### To Upgrade or Downgrade a Dependency
 
-We mostly rely on [Dependabot](https://github.com/dependabot) to keep all our
+We rely on [Dependabot](https://github.com/dependabot) to keep all our
 dependencies up to date by sending automated pull requests to all our repos.
+But if you need to upgrade or downgrade a package manually you can do that
+locally.
 
-If you need to upgrade or downgrade a dependency manually you can use
-[pip-tools](https://pip-tools.readthedocs.io/en/latest/) to do that locally.
-First make sure that pip-tools is installed:
+To upgrade a package to the latest version in all `requirements/*.txt` files:
 
 ```terminal
-PYENV_VERSION={{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_DOT_PATCH_FMT) }} pyenv exec pip install --quiet --disable-pip-version-check --upgrade pip-tools
+make requirements --always-make args='--upgrade-package <FOO>'
 ```
 
-Then to upgrade a dependency to the latest version:
+To upgrade or downgrade a package to a specific version:
 
 ```terminal
-PYENV_VERSION={{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_DOT_PATCH_FMT) }} pyenv exec pip-compile --allow-unsafe --quiet --generate-hashes --upgrade-package <FOO> requirements/<ENV>.in
-make requirements
+make requirements --always-make args='--upgrade-package <FOO>==<X.Y.Z>'
 ```
 
-To upgrade or downgrade a dependency to a specific version
+To upgrade **all** packages to their latest versions:
 
 ```terminal
-PYENV_VERSION={{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_DOT_PATCH_FMT) }} pyenv exec pip-compile --allow-unsafe --quiet --generate-hashes --upgrade-package <FOO>==<X.Y.Z> requirements/<ENV>.in
-make requirements
-```
-
-To upgrade all dependencies to their latest versions:
-
-```terminal
-PYENV_VERSION={{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_DOT_PATCH_FMT) }} pyenv exec pip-compile --allow-unsafe --quiet --generate-hashes --upgrade <FOO> requirements/<ENV>.in
-make requirements
+make requirements --always-make args=--upgrade
 ```
