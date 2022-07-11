@@ -1,10 +1,40 @@
 import json
+import os.path
 from collections import OrderedDict
 from fnmatch import fnmatch
-from os import getcwd, walk
+from os import getcwd, remove, rmdir, walk
 from pathlib import Path
 from shutil import move
 from subprocess import run
+
+
+def remove_conditional_files():
+    paths_to_remove = []
+
+    {% if cookiecutter.get("docker") != "yes" %}
+    paths_to_remove.extend(["docker.env", "Dockerfile"])
+    {% endif %}
+
+    {% if cookiecutter.get("frontend") != "yes" %}
+    paths_to_remove.extend(["package.json", "yarn.lock"])
+    {% endif %}
+
+    {% if cookiecutter.get("services") != "yes" %}
+    paths_to_remove.extend(["docker-compose.yml", "requirements/dockercompose.in"])
+    {% endif %}
+
+    {% if cookiecutter.get("console_script") == "yes" %}
+    paths_to_remove.extend(["tests/functional/{{ cookiecutter.package_name }}_test.py"])
+    {% else %}
+    paths_to_remove.extend(["tests/functional/cli_test.py"])
+    {% endif %}
+
+    for path in paths_to_remove:
+        if os.path.exists(path):
+            try:
+                remove(path)
+            except IsADirectoryError:
+                rmdir(path)
 
 
 def write_cookiecutter_json_file():
@@ -74,6 +104,8 @@ def create_github_repo():
 def main():
     cookiecutter = {{ cookiecutter }}
     target_dir = cookiecutter.get("__target_dir__")
+
+    remove_conditional_files()
 
     if target_dir:
         # We are updating an existing project.
