@@ -4,7 +4,7 @@ from fnmatch import fnmatch
 from os import getcwd, walk
 from pathlib import Path
 from shutil import move
-from subprocess import run, DEVNULL, CalledProcessError
+from subprocess import run
 
 
 def write_cookiecutter_json_file():
@@ -42,11 +42,6 @@ def compile_requirements_files():
     run(["make", "requirements"])
 
 
-def git_installed():
-    """Return True if git is installed."""
-    return runs_successfully(["git", "--version"])
-
-
 def create_git_repo():
     """Create the project's git repo and do the initial commit."""
     print("=> Initializing git repo")
@@ -78,21 +73,6 @@ def create_github_repo():
         ],
         check=True,
     )
-
-
-def runs_successfully(command):
-    """Run `command` and return True if it exited successfully."""
-    try:
-        run(
-            command,
-            check=True,
-            stdout=DEVNULL,
-            stderr=DEVNULL,
-        )
-    except CalledProcessError:
-        return False
-
-    return True
 
 
 def main():
@@ -161,11 +141,10 @@ def main():
         compile_requirements_files()
         {%- endif %}
 
-        if git_installed():
-            create_git_repo()
+        create_git_repo()
 
-            if {{ cookiecutter.get("create_github_repo") == "yes" }}:
-                create_github_repo()
+        if {{ cookiecutter.get("create_github_repo") == "yes" }}:
+            create_github_repo()
 
 
 if __name__ == "__main__":
