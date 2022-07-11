@@ -181,7 +181,7 @@ requirements requirements/: $(foreach file,$(wildcard requirements/*.in),$(basen
 .PHONY: template
 $(call help,make template,"update from the latest cookiecutter template")
 template: python
-	@pyenv exec tox -e template -- $$(if [ -n "$${template+x}" ]; then echo "--template $$template"; fi) $$(if [ -n "$${checkout+x}" ]; then echo "--checkout $$checkout"; fi)
+	@pyenv exec tox -e template -- $$(if [ -n "$${template+x}" ]; then echo "--template $$template"; fi) $$(if [ -n "$${checkout+x}" ]; then echo "--checkout $$checkout"; fi) $$(if [ -n "$${directory+x}" ]; then echo "--directory $$directory"; fi)
 
 {% if cookiecutter.get("docker") == "yes" -%}
 DOCKER_TAG = dev
