@@ -1,12 +1,10 @@
 import json
 from collections import OrderedDict
 from fnmatch import fnmatch
-from os import environ, getcwd, symlink, walk
+from os import getcwd, walk
 from pathlib import Path
 from shutil import move
 from subprocess import run, DEVNULL, CalledProcessError
-
-from cookiecutter.prompt import read_user_yes_no
 
 
 def write_cookiecutter_json_file():
@@ -49,16 +47,6 @@ def git_installed():
     return runs_successfully(["git", "--version"])
 
 
-def github_cli_installed():
-    """Return True if GitHub CLI is installed."""
-    return runs_successfully(["gh", "version"])
-
-
-def on_ci_or_testing():
-    """Return True if we are running on CI (e.g. GitHub Actions) or in the tests."""
-    return "CI" in environ or "TESTING" in environ
-
-
 def create_git_repo():
     """Create the project's git repo and do the initial commit."""
     print("=> Initializing git repo")
@@ -70,14 +58,6 @@ def create_git_repo():
 
 def create_github_repo():
     """Create the project's GitHub repo."""
-    answer = read_user_yes_no(
-        "Create GitHub repo {{ cookiecutter.__github_url }} (yes or no)?",
-        default_value="no",
-    )
-
-    if not answer:
-        return
-
     run(
         [
             "gh",
@@ -184,7 +164,7 @@ def main():
         if git_installed():
             create_git_repo()
 
-            if github_cli_installed() and not on_ci_or_testing():
+            if {{ cookiecutter.get("create_github_repo") == "yes" }}:
                 create_github_repo()
 
 

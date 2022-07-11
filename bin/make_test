@@ -9,8 +9,6 @@
 #     bin/make_test pypackage python_versions="3.10.4, 3.9.12, 3.8.13"
 set -euo pipefail
 
-export TESTING=yes  # Don't ask interactive questions.
-
 tempdir=$(mktemp -d)
 slug="test-project"
 cookiecutter . --directory "$1" --output-dir "$tempdir" --no-input slug="$slug" "${@:2}"
