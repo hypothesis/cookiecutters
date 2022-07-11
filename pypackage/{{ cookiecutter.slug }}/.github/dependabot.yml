@@ -1,9 +1,1 @@
-version: 2
-updates:
-- package-ecosystem: "pip"
-  directory: "/"
-  schedule:
-    interval: "{{ cookiecutter.get("dependabot_interval", "monthly") }}"
-    day: "sunday"
-    time: "00:00"
-    timezone: "Europe/London"
+../../../_shared/project/.github/dependabot.yml
