@@ -59,11 +59,7 @@ def create_github_repo():
             "repo",
             "create",
             "{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}",
-            {% if cookiecutter.get("public") == "yes" -%}
-            "--public",
-            {% else -%}
-            "--private",
-            {% endif -%}
+            "--{{ cookiecutter.get('visibility', 'private') }}",
             "--description",
             "{{ cookiecutter.short_description }}",
             "--disable-wiki",
