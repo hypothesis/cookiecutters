@@ -1,6 +1,6 @@
 version: 2
 updates:
-- package-ecosystem: pip
+- package-ecosystem: "pip"
   directory: "/"
   schedule:
     interval: "{{ cookiecutter.get('dependabot_pip_interval', 'monthly') }}"
@@ -8,7 +8,7 @@ updates:
     time: "00:00"
     timezone: "Europe/London"
 {%- if cookiecutter.get("frontend") == "yes" %}
-- package-ecosystem: npm
+- package-ecosystem: "npm"
   directory: "/"
   schedule:
     interval: "{{ cookiecutter.get('dependabot_npm_interval', 'monthly') }}"
@@ -17,7 +17,7 @@ updates:
     timezone: "Europe/London"
 {%- endif %}
 {%- if cookiecutter.get("docker") == "yes" %}
-- package-ecosystem: docker
+- package-ecosystem: "docker"
   directory: "/"
   schedule:
     interval: "{{ cookiecutter.get('dependabot_docker_interval', 'monthly') }}"
