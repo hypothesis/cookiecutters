@@ -57,6 +57,7 @@ def write_cookiecutter_json_file():
         json.dump(
             {
                 "template": "https://github.com/hypothesis/cookiecutters",
+                "checkout": None,
                 "directory": directory,
                 "ignore": [],
                 "extra_context": extra_context,
