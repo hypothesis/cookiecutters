@@ -45,6 +45,7 @@ def write_cookiecutter_json_file():
 
     extra_context = {{ cookiecutter }}
     directory = extra_context.pop("_directory")
+    del extra_context["create_github_repo"]
     del extra_context["_extensions"]
     del extra_context["_template"]
     del extra_context["_output_dir"]
