@@ -1,3 +1,5 @@
+See also: [Cookiecutters presentation slides](https://docs.google.com/presentation/d/1bfAkyJvIQINusmYnw0tCH1ldlJ-ZDWd78o9VKjmulys/)
+
 Cookiecutters
 =============
 
