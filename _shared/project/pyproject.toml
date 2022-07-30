@@ -49,11 +49,12 @@ ignore = [
 branch = true
 parallel = true
 source = ["{{ cookiecutter.package_name }}", "tests/unit"]
-{%- if include_exists("coverage/omit") %}
 omit = [
+    "*/{{ cookiecutter.package_name }}/__main__.py",
+    {%- if include_exists("coverage/omit") %}
     {{- include("coverage/omit", indent=4) }}
+    {%- endif %}
 ]
-{%- endif %}
 
 [tool.coverage.paths]
 source = ["src", ".tox/*tests/lib/python*/site-packages"]

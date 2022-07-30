@@ -2,11 +2,12 @@
 help:
 	@echo "make help              Print this help message"
 	@echo "make test              Test all the cookiecutters"
+	@echo "make sure              Test all the cookiecutters"
 	@echo "make test-pypackage    Test the pypackage cookiecutter"
 	@echo "make test-pyramid-app  Test the pyramid-app cookiecutter"
 
-.PHONY: test
-test: test-pypackage test-pyramid-app
+.PHONY: test sure
+test sure: test-pypackage test-pyramid-app
 
 .PHONY: test-pypackage
 test-pypackage:
