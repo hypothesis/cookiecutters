@@ -23,9 +23,7 @@ def remove_conditional_files():
     paths_to_remove.extend(["docker-compose.yml", "requirements/dockercompose.in"])
     {% endif %}
 
-    {% if cookiecutter.get("console_script") == "yes" %}
-    paths_to_remove.extend(["tests/functional/{{ cookiecutter.package_name }}_test.py"])
-    {% else %}
+    {% if cookiecutter.get("console_script") != "yes" %}
     paths_to_remove.extend(["tests/functional/cli_test.py"])
     {% endif %}
 
@@ -145,7 +143,7 @@ def main():
             "tests/unit/{{ cookiecutter.package_name }}/main_test.py",
             "tests/functional/__init__.py",
             "tests/functional/cli_test.py",
-            "tests/functional/{{ cookiecutter.package_name }}_test.py",
+            "tests/functional/sanity_test.py",
         ])
         {%- endif %}
 
