@@ -138,7 +138,7 @@ sure:
 # Tell make how to compile requirements/*.txt files.
 #
 # `touch` is used to pre-create an empty requirements/%.txt file if none
-# exists, otherwise tox-pip-sync crashes.
+# exists, otherwise tox crashes.
 #
 # $(subst) is used because in the special case of making prod.txt we actually
 # need to touch dev.txt not prod.txt and we need to run `tox -e dev ...`
@@ -148,6 +148,7 @@ sure:
 # requirements/%.txt filename, for example requirements/foo.txt -> foo.
 requirements/%.txt: requirements/%.in
 	@touch -a $(subst prod.txt,dev.txt,$@)
+	@tox -qe $(subst prod,dev,$(basename $(notdir $@))) --run-command 'pip --quiet --disable-pip-version-check install pip-tools'
 	@tox -qe $(subst prod,dev,$(basename $(notdir $@))) --run-command 'pip-compile --allow-unsafe --quiet $(args) $<'
 
 # Inform make of the dependencies between our requirements files so that it
@@ -157,10 +158,6 @@ requirements/dev.txt: requirements/prod.txt
 requirements/tests.txt: requirements/prod.txt
 requirements/functests.txt: requirements/prod.txt
 requirements/lint.txt: requirements/tests.txt requirements/functests.txt
-
-# checkformatting.txt is symlink so it has its own recipe.
-requirements/checkformatting.txt:
-	@ln -frs requirements/format.txt requirements/checkformatting.txt
 
 # Add a requirements target so you can just run `make requirements` to
 # re-compile *all* the requirements files at once.
@@ -174,7 +171,7 @@ requirements/checkformatting.txt:
 # the .in's with .txt's.
 .PHONY: requirements requirements/
 $(call help,make requirements,"compile the requirements files")
-requirements requirements/: $(foreach file,$(wildcard requirements/*.in),$(basename $(file)).txt) requirements/checkformatting.txt
+requirements requirements/: $(foreach file,$(wildcard requirements/*.in),$(basename $(file)).txt)
 
 {% endif -%}
 
