@@ -24,7 +24,6 @@ def remove_conditional_files():
     {% endif %}
 
     {% if cookiecutter.get("console_script") != "yes" %}
-    paths_to_remove.extend(["INSTALL.md"])
     paths_to_remove.extend(["src/{{ cookiecutter.package_name }}/__main__.py"])
     paths_to_remove.extend(["src/{{ cookiecutter.package_name }}/cli.py"])
     paths_to_remove.extend(["tests/unit/{{ cookiecutter.package_name }}/cli_test.py"])
