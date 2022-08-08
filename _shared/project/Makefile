@@ -127,6 +127,7 @@ $(call help,make {{ target }},"run the functional tests in Python {{ python_vers
 
 .PHONY: sure
 $(call help,make sure,"make sure that the formatting$(comma) linting and tests all pass")
+sure: python
 sure:
 {%- if cookiecutter._directory == 'pyramid-app' %}
 	@pyenv exec tox --parallel -qe 'checkformatting,lint,tests,coverage,functests'
