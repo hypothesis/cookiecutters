@@ -4,19 +4,22 @@ comma := ,
 help = help::; @echo $$$$(tput bold)$(strip $(1)):$$$$(tput sgr0) $(strip $(2))
 $(call help,make help,print this help message)
 
-{%- if cookiecutter.get("_directory") == "pyramid-app" %}
-
 .PHONY: services
+{%- if cookiecutter.get("services") == "yes" %}
 $(call help,make services,start the services that the app needs)
 services: args?=up -d
 services: python
-{%- if cookiecutter.get("services") == "yes" %}
 	@tox -qe dockercompose -- $(args)
 {%- endif %}
 
 .PHONY: devdata
+{%- if cookiecutter.get("devdata") == "yes" %}
 $(call help,make devdata,load development data and environment variables)
 devdata: python
+	@tox -qe dev --run-command 'python bin/make_devdata'
+{%- endif %}
+
+{%- if cookiecutter.get("_directory") == "pyramid-app" %}
 
 .PHONY: dev
 $(call help,make dev,run the whole app \(all workers\))
