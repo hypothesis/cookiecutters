@@ -19,6 +19,10 @@ def remove_conditional_files():
     paths_to_remove.extend(["package.json", "yarn.lock"])
     {% endif %}
 
+    {% if cookiecutter.get("devdata") != "yes" %}
+    paths_to_remove.extend(["bin/make_devdata"])
+    {% endif %}
+
     {% if cookiecutter.get("services") != "yes" %}
     paths_to_remove.extend(["docker-compose.yml", "requirements/dockercompose.in"])
     {% endif %}

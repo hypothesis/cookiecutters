@@ -8,6 +8,8 @@
     "copyright_holder": "Hypothesis",
     "visibility": ["public", "private"],
     "console_script": ["no", "yes"],
+    "devdata": ["no", "yes"],
+    "services": ["no", "yes"],
     "create_github_repo": ["no", "yes"],
     "dependabot_pip_interval": ["monthly", "weekly", "daily"],
     "__entry_point": "{{ cookiecutter.slug }}",

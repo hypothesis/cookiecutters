@@ -12,6 +12,7 @@
     "dependabot_pip_interval": ["monthly", "weekly", "daily"],
     "dependabot_npm_interval": ["monthly", "weekly", "daily"],
     "dependabot_docker_interval": ["monthly", "weekly", "daily"],
+    "devdata": ["no", "yes"],
     "frontend": ["no", "yes"],
     "__frontend_typechecking": "{{ cookiecutter.frontend }}",
     "services": ["no", "yes"],
