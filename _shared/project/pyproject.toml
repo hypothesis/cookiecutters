@@ -149,10 +149,6 @@ score = "no"
 
 [tool.hdev]
 project_name = "{{ cookiecutter.name }}"
-{%- if cookiecutter._directory == "pyramid-app" %}
-project_type = "application"
-{%- elif cookiecutter._directory == "pypackage" %}
-project_type = "package"
-{%- endif %}
+project_type = "{{ cookiecutter.__hdev_project_type }}"
 
 {{- include("pyproject.toml") }}

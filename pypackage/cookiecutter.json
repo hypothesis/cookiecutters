@@ -17,6 +17,7 @@
     "__pypi_url": "https://pypi.org/project/{{ cookiecutter.slug }}",
     "_extensions": ["local_extensions.LocalJinja2Extension"],
     "_directory": "pypackage",
+    "__hdev_project_type": "library",
     "__ignore__": "",
     "__target_dir__": ""
 }

@@ -23,6 +23,7 @@
     "__github_url": "https://github.com/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}",
     "_extensions": ["local_extensions.LocalJinja2Extension"],
     "_directory": "pyramid-app",
+    "__hdev_project_type": "application",
     "__ignore__": "",
     "__target_dir__": ""
 }
