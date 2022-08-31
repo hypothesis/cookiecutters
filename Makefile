@@ -11,7 +11,7 @@ test sure: test-pypackage test-pyramid-app
 
 .PHONY: test-pypackage
 test-pypackage:
-	@bin/make_test pypackage python_versions="3.10.4, 3.9.12, 3.8.13" console_script=yes
+	@bin/make_test pypackage console_script=yes
 
 .PHONY: test-pyramid-app
 test-pyramid-app:
