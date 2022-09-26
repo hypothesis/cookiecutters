@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+"""Update all Hypothesis repos with the latest cookiecutter template changes.
+
+Find all cookiecuttered repos in the Hypothesis organization, run each repo's
+`tox -e template` command, and send any changes as pull requests.
+
+Requires tox, GitHub CLI and the gh-pr-upsert extension to be installed.
+"""
+import logging
+import subprocess
+import tempfile
+import sys
+
+from subprocess import CalledProcessError, PIPE, STDOUT
+
+logging.basicConfig(format="bin/make_template> %(message)s", level=logging.INFO)
+
+SKIP_REPOS = [
+    "hypothesis/cookiecutters",
+    "hypothesis/template-test-repo",
+    "hypothesis/superdev",
+    "hypothesis/hdev",
+]
+
+repos = subprocess.run(
+    [
+        "gh",
+        "api",
+        "-X",
+        "GET",
+        "search/repositories",
+        "--paginate",
+        "-f",
+        "q='cookiecutters in:readme org:hypothesis archived:false'",
+        "-q",
+        ".items | .[] | .full_name",
+    ],
+    capture_output=True,
+    check=True,
+    text=True,
+).stdout.split()
+
+# Has processing any of the repos failed?
+failed = False
+
+for repo in repos:
+    if repo in SKIP_REPOS:
+        continue
+
+    logging.info(f"Updating {repo}")
+
+    # Collect the results of all commands run for this repo.
+    results = []
+
+    def run(command):
+        result = subprocess.run(
+            command, cwd=tmpdirname, stdout=PIPE, stderr=STDOUT, text=True
+        )
+        results.append(result)
+        result.check_returncode()
+        return result
+
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        try:
+            run(["gh", "repo", "clone", repo, tmpdirname])
+            run(["tox", "-e", "template"])
+
+            if run(["git", "status", "--porcelain"]).stdout:
+                run(["git", "switch", "--force-create", "cookiecutter"])
+                run(["git", "add", "--all"])
+                run(["git", "commit", "--message", "Apply updates from cookiecutter"])
+                try:
+                    run(["gh", "pr-upsert"])
+                except CalledProcessError as err:
+                    if err.returncode not in [5, 6]:
+                        raise
+            else:
+                logging.info(
+                    f"{repo} was already up-to-date, there were no changes to commit"
+                )
+        except CalledProcessError as err:
+            failed = True
+            for result in results:
+                print(
+                    f"$ {' '.join(result.args)} (returncode was: {result.returncode})"
+                )
+                print(result.stdout)
+
+sys.exit(failed)
