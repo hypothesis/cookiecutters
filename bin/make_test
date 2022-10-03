@@ -13,6 +13,6 @@ tempdir=$(mktemp -d)
 slug="test-project"
 cookiecutter . --directory "$1" --output-dir "$tempdir" --no-input slug="$slug" "${@:2}"
 cd "$tempdir"/"$slug"
-make -j -O sure
+make -j sure
 cd -
 rm -rf "$tempdir"
