@@ -12,7 +12,7 @@ if __name__ == "__main__":
                 "clone",
                 "--depth",
                 "1",
-                "git@github.com:hypothesis/devdata.git",
+                "https://github.com/hypothesis/devdata.git",
                 git_dir,
             ]
         )
