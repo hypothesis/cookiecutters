@@ -277,12 +277,12 @@
 {% if cookiecutter._directory == 'pypackage' -%}
     {{ releasing()|dedent }}
 {% endif %}
-{% if cookiecutter._directory == 'pyramid-app' -%}
+{% if cookiecutter._directory in ['pyapp', 'pyramid-app'] -%}
     {{ app_python_version()|dedent }}
 {% else -%}
     {{ package_python_version()|dedent }}
 {% endif %}
-{% if cookiecutter._directory == 'pyramid-app' -%}
+{% if cookiecutter._directory in ['pyapp', 'pyramid-app'] -%}
     {{ app_python_dependencies()|dedent }}
 {%- else -%}
     {{ package_python_dependencies()|dedent }}

@@ -4,14 +4,19 @@ help:
 	@echo "make test              Test all the cookiecutters"
 	@echo "make sure              Test all the cookiecutters"
 	@echo "make test-pypackage    Test the pypackage cookiecutter"
+	@echo "make test-pyapp        Test the pyapp cookiecutter"
 	@echo "make test-pyramid-app  Test the pyramid-app cookiecutter"
 
 .PHONY: test sure
-test sure: test-pypackage test-pyramid-app
+test sure: test-pypackage test-pyapp test-pyramid-app
 
 .PHONY: test-pypackage
 test-pypackage:
 	@bin/make_test pypackage console_script=yes devdata=yes services=yes
+
+.PHONY: test-pyapp
+test-pyapp:
+	@bin/make_test pyapp db=yes devdata=yes docker=yes services=yes
 
 .PHONY: test-pyramid-app
 test-pyramid-app:

@@ -54,6 +54,9 @@ parallel = true
 source = ["{{ cookiecutter.package_name }}", "tests/unit"]
 omit = [
     "*/{{ cookiecutter.package_name }}/__main__.py",
+    {% if cookiecutter.get("_directory") == "pyapp" %}
+    "*/{{ cookiecutter.package_name }}/app.py",
+    {% endif %}
     {% if include_exists("coverage/omit") %}
         {{- include("coverage/omit", indent=4) -}}
     {% endif %}

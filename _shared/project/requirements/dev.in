@@ -1,0 +1,12 @@
+pip-tools
+-r prod.txt
+factory-boy
+{% if cookiecutter.get("_directory") == "pyramid-app" %}
+pyramid-ipython
+{% else %}
+ipython
+{% endif %}
+supervisor
+{% if include_exists("requirements/dev.in") %}
+    {{- include("requirements/dev.in") -}}
+{% endif %}
