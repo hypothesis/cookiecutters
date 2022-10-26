@@ -1,2 +1,1 @@
-def hello_world():
-    return "Hello, world!"
+../../../../_shared/project/core.py

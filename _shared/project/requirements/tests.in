@@ -1,0 +1,11 @@
+pip-tools
+-r prod.txt
+coverage[toml]
+pytest
+factory-boy
+h-matchers
+httpretty
+freezegun
+{% if include_exists("requirements/tests.in") %}
+    {{- include("requirements/tests.in") -}}
+{% endif %}

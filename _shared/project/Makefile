@@ -18,12 +18,14 @@ $(call help,make devdata,load development data and environment variables)
 devdata: python
 	@tox -qe dev --run-command 'python bin/make_devdata'
 {% endif %}
-{% if cookiecutter.get("_directory") == "pyramid-app" %}
+{% if cookiecutter.get("_directory") in ["pyapp", "pyramid-app"] %}
 
 .PHONY: dev
 $(call help,make dev,run the whole app \(all workers\))
 dev: python
 	@pyenv exec tox -qe dev
+{% endif %}
+{% if cookiecutter.get("_directory") == "pyramid-app" %}
 
 .PHONY: web
 $(call help,make web,run just a web worker)
@@ -34,7 +36,9 @@ web: python
 .PHONY: shell
 $(call help,make shell,"launch a Python shell in this project's virtualenv")
 shell: python
-{% if cookiecutter._directory == 'pyramid-app' %}
+{% if cookiecutter._directory == 'pyapp' %}
+	@pyenv exec tox -qe dev --run-command 'ipython'
+{% elif cookiecutter._directory == 'pyramid-app' %}
 	@pyenv exec tox -qe dev --run-command 'pshell conf/development.ini'
 {% else %}
 	@pyenv exec tox -qe dev
@@ -128,13 +132,13 @@ $(call help,make {{ target }},"run the functional tests in Python {{ python_vers
 $(call help,make sure,"make sure that the formatting$(comma) linting and tests all pass")
 sure: python
 sure:
-{% if cookiecutter._directory == 'pyramid-app' %}
+{% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
 	@pyenv exec tox --parallel -qe 'checkformatting,lint,tests,coverage,functests'
 {% else %}
 	@pyenv exec tox --parallel -qe 'checkformatting,lint,tests,py{{ "{" }}{{ python_versions()|rest|pyformat(PyFormats.MAJOR_MINOR_FMT)|separator(",") }}{{ "}" }}-tests,coverage,functests,py{{ "{" }}{{ python_versions()|rest|pyformat(PyFormats.MAJOR_MINOR_FMT)|separator(",") }}{{ "}" }}-functests'
 {% endif %}
 
-{% if cookiecutter._directory == 'pyramid-app' %}
+{% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
 # Tell make how to compile requirements/*.txt files.
 #
 # `touch` is used to pre-create an empty requirements/%.txt file if none
@@ -199,7 +203,9 @@ docker-run:
 {% if cookiecutter.get("devdata") == "yes" %}
 		--env-file .devdata.env \
 {% endif %}
+{% if cookiecutter.get("_directory") == "pyramid-app" %}
 		-p {{ cookiecutter.port }}:{{ cookiecutter.port }} \
+{% endif %}
 		{{ cookiecutter.__docker_namespace }}/{{ cookiecutter.slug }}:$(DOCKER_TAG)
 
 {% endif %}

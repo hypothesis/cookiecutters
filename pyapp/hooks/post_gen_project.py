@@ -1,0 +1,1 @@
+../../_shared/hooks/post_gen_project.py

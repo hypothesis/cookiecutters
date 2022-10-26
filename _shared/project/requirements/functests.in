@@ -1,0 +1,12 @@
+pip-tools
+-r prod.txt
+httpretty
+pytest
+factory-boy
+h-matchers
+{% if cookiecutter.get("_directory") == "pyramid-app" %}
+webtest
+{% endif %}
+{% if include_exists("requirements/functests.in") %}
+    {{- include("requirements/functests.in") -}}
+{% endif %}

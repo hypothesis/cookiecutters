@@ -42,7 +42,7 @@ jobs:
           {% else %}
           python-version: '{{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}'
           {% endif %}
-      {% if cookiecutter._directory == 'pyramid-app' %}
+      {% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
       - name: Cache the .tox dir
         uses: actions/cache@v3
         with:

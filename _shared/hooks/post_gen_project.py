@@ -19,6 +19,10 @@ def remove_conditional_files():
     paths_to_remove.extend(["package.json", "yarn.lock"])
     {% endif %}
 
+    {% if cookiecutter.get("db") != "yes" %}
+    paths_to_remove.extend(["bin/create-db"])
+    {% endif %}
+
     {% if cookiecutter.get("devdata") != "yes" %}
     paths_to_remove.extend(["bin/make_devdata"])
     {% endif %}
@@ -123,7 +127,7 @@ def main():
 
         template_ignore_patterns = [".git/*"]
 
-        {% if cookiecutter._directory == 'pyramid-app' %}
+        {% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
         template_ignore_patterns.extend([
             "{{ cookiecutter.package_name }}/__init__.py",
             "{{ cookiecutter.package_name }}/app.py",
@@ -175,7 +179,7 @@ def main():
         # We're creating a new project for the first time.
         write_cookiecutter_json_file()
 
-        {% if cookiecutter._directory == 'pyramid-app' %}
+        {% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
         compile_requirements_files()
         {% endif %}
 
