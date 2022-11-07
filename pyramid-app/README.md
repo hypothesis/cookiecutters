@@ -30,7 +30,7 @@ Usage
    cookiecutter gh:hypothesis/cookiecutters --directory pyramid-app
    ```
 
-   See the `HACKING.md` file in your newly created project for instructions on
+   See the `README.md` file in your newly created project for instructions on
    managing the project.
 
 ### Updating a project
