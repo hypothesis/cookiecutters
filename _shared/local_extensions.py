@@ -1,5 +1,6 @@
 import textwrap
 from pathlib import Path
+from textwrap import dedent
 
 from jinja2.ext import Extension, pass_context
 
@@ -84,6 +85,7 @@ class LocalJinja2Extension(Extension):
                 "quote": self.quote,
                 "separator": self.separator,
                 "rest": self.rest,
+                "dedent": self.dedent,
             }
         )
 
@@ -136,6 +138,10 @@ class LocalJinja2Extension(Extension):
     def rest(self, list_):
         """Return a list of all but the first item in `list_`."""
         return list_[1:]
+
+    def dedent(self, s):
+        """Return `s` dedented."""
+        return dedent(s)
 
     def _readlines(self, context, path):
         """Return the lines from `path` in the project's .cookiecutter/includes dir."""
