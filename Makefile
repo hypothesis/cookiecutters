@@ -15,4 +15,4 @@ test-pypackage:
 
 .PHONY: test-pyramid-app
 test-pyramid-app:
-	@bin/make_test pyramid-app python_version=3.10.4 db=yes devdata=yes docker=yes frontend=yes services=yes
+	@bin/make_test pyramid-app db=yes devdata=yes docker=yes frontend=yes services=yes
