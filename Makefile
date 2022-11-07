@@ -11,8 +11,8 @@ test sure: test-pypackage test-pyramid-app
 
 .PHONY: test-pypackage
 test-pypackage:
-	@bin/make_test pypackage console_script=yes
+	@bin/make_test pypackage console_script=yes devdata=yes services=yes
 
 .PHONY: test-pyramid-app
 test-pyramid-app:
-	@bin/make_test pyramid-app python_version=3.10.4  docker=yes services=yes db=yes frontend=yes
+	@bin/make_test pyramid-app python_version=3.10.4 db=yes devdata=yes docker=yes frontend=yes services=yes
