@@ -5,4 +5,6 @@ pytest
 factory-boy
 h-matchers
 webtest
-{{- include("requirements/functests.in") }}
+{% if include_exists("requirements/functests.in") %}
+    {{- include("requirements/functests.in") -}}
+{% endif %}

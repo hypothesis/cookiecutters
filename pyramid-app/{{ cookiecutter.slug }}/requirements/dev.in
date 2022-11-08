@@ -3,4 +3,6 @@ pip-tools
 factory-boy
 pyramid-ipython
 supervisor
-{{- include("requirements/dev.in") }}
+{% if include_exists("requirements/dev.in") %}
+    {{- include("requirements/dev.in") -}}
+{% endif %}

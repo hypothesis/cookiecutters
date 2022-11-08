@@ -1,6 +1,6 @@
-{% if cookiecutter.get("visibility") == "public" -%}
+{% if cookiecutter.get("visibility") == "public" %}
 <a href="{{ cookiecutter.__github_url }}/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://img.shields.io/github/workflow/status/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}/CI/main"></a>
-{% endif -%}
+{% endif %}
 <a><img src="https://img.shields.io/badge/python-{{ python_versions()|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT)|separator(" | ") }}-success"></a>
 <a href="{{ cookiecutter.__github_url }}/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-BSD--2--Clause-success"></a>
 <a href="https://github.com/hypothesis/cookiecutters/tree/main/pyramid-app"><img src="https://img.shields.io/badge/cookiecutter-pyramid--app-success"></a>
@@ -25,7 +25,7 @@ First you'll need to install:
   [use pyenv without shims](https://github.com/pyenv/pyenv#using-pyenv-without-shims).
 * [GNU Make](https://www.gnu.org/software/make/).
   This is probably already installed or will have been installed while installing pyenv, run `make --version` to check.
-{%- if cookiecutter.get("services") == "yes" %}
+{% if cookiecutter.get("services") == "yes" %}
 * [Docker](https://docs.docker.com/install/).
   Follow the [instructions on the Docker website](https://docs.docker.com/install/)
   to install it.  
@@ -33,14 +33,16 @@ First you'll need to install:
   will install it automatically for you in tox.  
   You **do** need to set up the `docker` command to work without `sudo`,
   on Linux this means following Docker's [Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/).
-{%- endif %}
-{%- if cookiecutter.get("frontend") == "yes" %}
+{% endif %}
+{% if cookiecutter.get("frontend") == "yes" %}
 * [Node](https://nodejs.org/) and npm.
   On Ubuntu: `sudo snap install --classic node`.
   On macOS: `brew install node`.
 * [Yarn](https://yarnpkg.com/): `sudo npm install -g yarn`.
-{%- endif %}
-{{- include("hacking/prerequisites") }}
+{% endif %}
+{% if include_exists("hacking/prerequisites") %}
+    {{- include("hacking/prerequisites") -}}
+{% endif %}
 
 Then to set up your development environment:
 

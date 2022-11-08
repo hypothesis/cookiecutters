@@ -1,3 +1,5 @@
 pip-tools
 coverage[toml]
-{{- include("requirements/coverage.in") }}
+{% if include_exists("requirements/coverage.in") %}
+    {{- include("requirements/coverage.in") -}}
+{% endif %}

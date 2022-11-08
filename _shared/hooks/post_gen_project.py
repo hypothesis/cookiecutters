@@ -123,7 +123,7 @@ def main():
 
         template_ignore_patterns = [".git/*"]
 
-        {%- if cookiecutter._directory == 'pyramid-app' %}
+        {% if cookiecutter._directory == 'pyramid-app' %}
         template_ignore_patterns.extend([
             "{{ cookiecutter.package_name }}/__init__.py",
             "{{ cookiecutter.package_name }}/app.py",
@@ -140,7 +140,7 @@ def main():
             "tests/functional/__init__.py",
             "tests/functional/app_test.py",
         ])
-        {%- else %}
+        {% else %}
         template_ignore_patterns.extend([
             "src/{{ cookiecutter.package_name }}/__init__.py",
             "src/{{ cookiecutter.package_name }}/__main__.py",
@@ -155,7 +155,7 @@ def main():
             "tests/functional/cli_test.py",
             "tests/functional/sanity_test.py",
         ])
-        {%- endif %}
+        {% endif %}
 
         for root, _dirs, files in walk(temp_dir):
             for file in files:
@@ -175,9 +175,9 @@ def main():
         # We're creating a new project for the first time.
         write_cookiecutter_json_file()
 
-        {% if cookiecutter._directory == 'pyramid-app' -%}
+        {% if cookiecutter._directory == 'pyramid-app' %}
         compile_requirements_files()
-        {%- endif %}
+        {% endif %}
 
         create_git_repo()
 

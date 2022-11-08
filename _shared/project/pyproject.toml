@@ -1,19 +1,20 @@
-{% if cookiecutter._directory == 'pypackage' -%}
+{% if cookiecutter._directory == 'pypackage' %}
 [build-system]
 requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
 
-{% endif -%}
-
+{% endif %}
 [tool.pytest.ini_options]
 addopts = "-q"
 filterwarnings = [
     "error", # Fail the tests if there are any warnings.
     "ignore:^find_module\\(\\) is deprecated and slated for removal in Python 3.12; use find_spec\\(\\) instead$:DeprecationWarning:importlib",
     "ignore:^FileFinder.find_loader\\(\\) is deprecated and slated for removal in Python 3.12; use find_spec\\(\\) instead$:DeprecationWarning:importlib",
-    {{- include("pytest/filterwarnings", indent=4) }}
+    {% if include_exists("pytest/filterwarnings") %}
+        {{- include("pytest/filterwarnings", indent=4) -}}
+    {% endif %}
 ]
 
 [tool.pydocstyle]
@@ -41,8 +42,10 @@ ignore = [
     # > https://peps.python.org/pep-0257/#multi-line-docstrings
     "D212",
     "D213",
+{% if include_exists("pydocstyle/ignores") %}
 
-    {{- include("pydocstyle/ignores", indent=4) }}
+{{ include("pydocstyle/ignores", indent=4) -}}
+{% endif %}
 ]
 
 [tool.coverage.run]
@@ -51,9 +54,9 @@ parallel = true
 source = ["{{ cookiecutter.package_name }}", "tests/unit"]
 omit = [
     "*/{{ cookiecutter.package_name }}/__main__.py",
-    {%- if include_exists("coverage/omit") %}
-    {{- include("coverage/omit", indent=4) }}
-    {%- endif %}
+    {% if include_exists("coverage/omit") %}
+        {{- include("coverage/omit", indent=4) -}}
+    {% endif %}
 ]
 
 [tool.coverage.paths]
@@ -86,7 +89,9 @@ load-plugins = [
     "pylint.extensions.mccabe",
     "pylint.extensions.overlapping_exceptions",
     "pylint.extensions.redefined_variable_type",
-    {{- include("pylint/plugins", indent=4) }}
+    {% if include_exists("pylint/plugins") %}
+        {{- include("pylint/plugins", indent=4) -}}
+    {% endif %}
 ]
 
 # Fail if there are *any* messages from PyLint.
@@ -100,7 +105,9 @@ enable = [
     "deprecated-pragma",
     "useless-suppression",
     "use-symbolic-message-instead",
-    {{- include("pylint/enables", indent=4) }}
+    {% if include_exists("pylint/enables") %}
+        {{- include("pylint/enables", indent=4) -}}
+    {% endif %}
 ]
 disable = [
     # Docstrings are encouraged but we don't want to enforce that everything
@@ -133,14 +140,18 @@ disable = [
 
     # Issues to disable this for false positives, disabling it globally in the meantime https://github.com/PyCQA/pylint/issues/214
     "duplicate-code",
+{% if include_exists("pylint/disables") %}
 
-    {{- include("pylint/disables", indent=4) }}
+{{ include("pylint/disables", indent=4) -}}
+{% endif %}
 ]
 
 good-names = [
     "i", "j", "k", "ex", "Run", "_", # PyLint's default good names.
     "tm", "db", "ai",
-    {{- include("pylint/good_names", indent=4) }}
+    {% if include_exists("pylint/good_names") %}
+        {{- include("pylint/good_names", indent=4) -}}
+    {% endif %}
 ]
 
 [tool.pylint.reports]
@@ -150,5 +161,7 @@ score = "no"
 [tool.hdev]
 project_name = "{{ cookiecutter.name }}"
 project_type = "{{ cookiecutter.__hdev_project_type }}"
+{% if include_exists("pyproject.toml") %}
 
-{{- include("pyproject.toml") }}
+{{ include("pyproject.toml") -}}
+{% endif %}

@@ -7,7 +7,7 @@ updates:
     day: "sunday"
     time: "00:00"
     timezone: "Europe/London"
-{%- if cookiecutter.get("frontend") == "yes" %}
+{% if cookiecutter.get("frontend") == "yes" %}
 - package-ecosystem: "npm"
   directory: "/"
   schedule:
@@ -15,8 +15,8 @@ updates:
     day: "sunday"
     time: "00:00"
     timezone: "Europe/London"
-{%- endif %}
-{%- if cookiecutter.get("docker") == "yes" %}
+{% endif %}
+{% if cookiecutter.get("docker") == "yes" %}
 - package-ecosystem: "docker"
   directory: "/"
   schedule:
@@ -28,4 +28,4 @@ updates:
     # Only send PRs for patch versions of Python.
     - dependency-name: "python"
       update-types: [ "version-update:semver-major", "version-update:semver-minor" ]
-{%- endif %}
+{% endif %}

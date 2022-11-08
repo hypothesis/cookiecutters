@@ -1,3 +1,5 @@
 pip-tools
 cookiecutter
-{{- include("requirements/template.in") }}
+{% if include_exists("requirements/template.in") %}
+    {{- include("requirements/template.in") -}}
+{% endif %}

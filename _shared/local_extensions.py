@@ -1,3 +1,4 @@
+import textwrap
 from pathlib import Path
 
 from jinja2.ext import Extension, pass_context
@@ -109,9 +110,9 @@ class LocalJinja2Extension(Extension):
         try:
             lines = self._readlines(context, path)
         except (FileNotFoundError, NotADirectoryError):
-            lines = []
+            return ""
 
-        return "".join(["\n"] + [(" " * indent) + line for line in lines]).rstrip()
+        return textwrap.indent("".join(lines), " " * indent)
 
     def oldest(self, python_versions):
         """Return the oldest from `python_versions` by version number."""
