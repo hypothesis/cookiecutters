@@ -6,4 +6,6 @@ factory-boy
 h-matchers
 httpretty
 freezegun
-{{- include("requirements/tests.in") }}
+{% if include_exists("requirements/tests.in") %}
+    {{- include("requirements/tests.in") -}}
+{% endif %}

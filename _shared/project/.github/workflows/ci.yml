@@ -2,18 +2,18 @@ name: CI
 on:
   push:
   workflow_dispatch:
-  {%- if cookiecutter._directory == 'pypackage' %}
+  {% if cookiecutter._directory == 'pypackage' %}
   schedule:
   - cron: '0 1 * * *'
-  {%- endif %}
+  {% endif %}
 jobs:
-  {%- for job in ['format', 'lint', 'tests', 'coverage', 'functests'] %}
+  {% for job in ['format', 'lint', 'tests', 'coverage', 'functests'] %}
   {{ job|capitalize }}:
-    {%- if job == 'coverage' %}
+    {% if job == 'coverage' %}
     needs: tests
-    {%- endif %}
+    {% endif %}
     runs-on: ubuntu-latest
-    {%- if cookiecutter.get("db") == "yes" %}
+    {% if cookiecutter.get("db") == "yes" %}
     services:
       postgres:
         image: postgres:11.5-alpine
@@ -21,66 +21,65 @@ jobs:
         - 5432:5432
     env:
       TEST_DATABASE_URL: postgresql://postgres@localhost:5432/{{ cookiecutter.package_name }}_test
-    {%- endif %}
-    {%- if cookiecutter._directory == 'pypackage' and (job == 'tests' or job == 'functests') %}
+    {% endif %}
+    {% if cookiecutter._directory == 'pypackage' and (job == 'tests' or job == 'functests') %}
     strategy:
       matrix:
         python-version: [{{ python_versions()|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT)|quote("'") }}]
-    {%- endif %}
-    {%- if cookiecutter._directory == 'pypackage' and job == 'tests' %}
-    name: Unit tests with Python {% raw %}${{ matrix.python-version }}{% endraw %}
-    {%- elif cookiecutter._directory == 'pypackage' and job == 'functests' %}
-    name: Functional tests with Python {% raw %}${{ matrix.python-version }}{% endraw %}
-    {%- endif %}
+    {% endif %}
+    {% if cookiecutter._directory == 'pypackage' and job == 'tests' %}
+    name: Unit tests with Python {% raw %}${{ matrix.python-version }}{% endraw +%}
+    {% elif cookiecutter._directory == 'pypackage' and job == 'functests' %}
+    name: Functional tests with Python {% raw %}${{ matrix.python-version }}{% endraw +%}
+    {% endif %}
     steps:
       - uses: actions/checkout@v3
       - name: Install Python
         uses: actions/setup-python@v4
         with:
-          {%- if cookiecutter._directory == 'pypackage' and (job == 'tests' or job == 'functests') %}
-          python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
-          {%- else %}
+          {% if cookiecutter._directory == 'pypackage' and (job == 'tests' or job == 'functests') %}
+          python-version: {% raw %}${{ matrix.python-version }}{% endraw +%}
+          {% else %}
           python-version: '{{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}'
-          {%- endif %}
-
-      {%- if cookiecutter._directory == 'pyramid-app' %}
+          {% endif %}
+      {% if cookiecutter._directory == 'pyramid-app' %}
       - name: Cache the .tox dir
         uses: actions/cache@v3
         with:
           path: .tox
-          key: {{ job }}-{% raw %}${{ runner.os }}-tox-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements/*') }}{% endraw %}
+          key: {{ job }}-{% raw %}${{ runner.os }}-tox-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements/*') }}{% endraw +%}
           restore-keys: |
-            {{ job }}-{% raw %}${{ runner.os }}-tox-{% endraw %}
-      {%- endif %}
-      {%- if cookiecutter.get("db") == "yes" %}
+            {{ job }}-{% raw %}${{ runner.os }}-tox-{% endraw +%}
+      {% endif %}
+      {% if cookiecutter.get("db") == "yes" %}
       - name: Create test database
         run: psql -U postgres -h localhost -p 5432 -c 'CREATE DATABASE {{ cookiecutter.package_name }}_test'
-      {%- endif %}
-      {%- if cookiecutter.get("frontend") == "yes" %}
+      {% endif %}
+      {% if cookiecutter.get("frontend") == "yes" %}
       - run: yarn install --frozen-lockfile
       - run: yarn build
-      {%- endif %}
-      {%- if job == 'coverage' %}
+      {% endif %}
+      {% if job == 'coverage' %}
       - name: Download coverage files
         uses: actions/download-artifact@v3
         with:
           name: coverage
-      {%- endif %}
+      {% endif %}
       - run: python -m pip install tox
-      {%- if job == 'format' %}
+      {% if job == 'format' %}
       - run: tox -e checkformatting
-      {%- else %}
+      {% else %}
       - run: tox -e {{ job }}
-      {%- endif %}
-      {%- if job == 'tests' %}
+      {% endif %}
+      {% if job == 'tests' %}
       - name: Upload coverage file
         uses: actions/upload-artifact@v3
         with:
           name: coverage
           path: .coverage.*
-      {%- endif %}
-  {%- endfor %}
-  {%- if cookiecutter.get("frontend") == "yes" %}
+      {% endif %}
+  {% endfor %}
+  {% if cookiecutter.get("frontend") == "yes" %}
   Frontend:
     runs-on: ubuntu-latest
     steps:
@@ -90,7 +89,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: node_modules
-        key: {% raw %}${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock') }}{% endraw %}
+        key: {% raw %}${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock') }}{% endraw +%}
     - name: Install
       run: yarn install --frozen-lockfile
     - name: Format
@@ -99,5 +98,5 @@ jobs:
       run: make frontend-lint
     - name: Test
       run: make frontend-test
-  {%- endif %}
-  {{- include(".github/workflows/ci.yml", indent=2) }}
+  {% endif %}
+  {{- include(".github/workflows/ci.yml", indent=2) -}}

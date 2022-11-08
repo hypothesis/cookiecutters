@@ -1,4 +1,6 @@
 pip-tools
 black
 isort
-{{- include("requirements/format.in") }}
+{% if include_exists("requirements/format.in") %}
+    {{- include("requirements/format.in") -}}
+{% endif %}

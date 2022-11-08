@@ -1,6 +1,6 @@
-{% if cookiecutter.get("visibility") == "public" -%}
+{% if cookiecutter.get("visibility") == "public" %}
 <a href="{{ cookiecutter.__github_url }}/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://img.shields.io/github/workflow/status/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}/CI/main"></a>
-{% endif -%}
+{% endif %}
 <a href="{{ cookiecutter.__pypi_url }}"><img src="https://img.shields.io/pypi/v/{{ cookiecutter.slug }}"></a>
 <a><img src="https://img.shields.io/badge/python-{{ python_versions()|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT)|separator(" | ") }}-success"></a>
 <a href="{{ cookiecutter.__github_url }}/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-BSD--2--Clause-success"></a>
@@ -10,11 +10,12 @@
 # {{ cookiecutter.name }}
 
 {{ cookiecutter.short_description }}
+{% if include_exists("README/head.md") %}
 
-{{- include("README/head.md") }}
+{{ include("README/head.md") -}}
+{% endif %}
 
-{%- if cookiecutter.get("console_script") == "yes" %}
-
+{% if cookiecutter.get("console_script") == "yes" %}
 ## Installing
 
 We recommend using [pipx](https://pypa.github.io/pipx/) to install
@@ -52,8 +53,8 @@ To uninstall run:
 ```
 pipx uninstall {{ cookiecutter.slug }}
 ```
-{%- endif %}
 
+{% endif %}
 ## Setting up Your {{ cookiecutter.name }} Development Environment
 
 First you'll need to install:
@@ -68,7 +69,9 @@ First you'll need to install:
   The **Basic GitHub Checkout** method works best on Ubuntu.
   You _don't_ need to set up pyenv's shell integration ("shims"), you can
   [use pyenv without shims](https://github.com/pyenv/pyenv#using-pyenv-without-shims).
-{{- include("hacking/prerequisites") }}
+{% if include_exists("hacking/prerequisites") %}
+    {{- include("hacking/prerequisites") -}}
+{% endif %}
 
 Then to set up your development environment:
 
@@ -154,5 +157,7 @@ To change the project's formatting, linting and test dependencies:
    ```
 
 3. Commit everything to git and send a pull request
+{% if include_exists("README/tail.md") %}
 
-{{- include("README/tail.md") }}
+{{ include("README/tail.md") -}}
+{% endif %}

@@ -1,4 +1,6 @@
 pyramid
 gunicorn
 newrelic
-{{- include("requirements/prod.in") }}
+{% if include_exists("requirements/prod.in") %}
+    {{- include("requirements/prod.in") -}}
+{% endif %}
