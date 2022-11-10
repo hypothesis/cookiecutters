@@ -197,9 +197,6 @@ $(call help,make docker-run,"run the app's docker image")
 docker-run:
 	@docker run \
 		--add-host host.docker.internal:host-gateway \
-{%- if cookiecutter.get("services") == "yes" %}
-		--net {{ cookiecutter.__docker_network }} \
-{%- endif %}
 		--env-file .docker.env \
 		--env-file .devdata.env \
 		-p {{ cookiecutter.port }}:{{ cookiecutter.port }} \
