@@ -201,7 +201,9 @@ docker-run:
 		--net {{ cookiecutter.__docker_network }} \
 {%- endif %}
 		--env-file .docker.env \
+{%- if cookiecutter.get("devdata") == "yes" %}
 		--env-file .devdata.env \
+{%- endif %}
 		-p {{ cookiecutter.port }}:{{ cookiecutter.port }} \
 		{{ cookiecutter.__docker_namespace }}/{{ cookiecutter.slug }}:$(DOCKER_TAG)
 
