@@ -74,7 +74,7 @@ Then to set up your development environment:
 
 ```terminal
 git clone {{ cookiecutter.__github_url }}.git
-cd {{ cookiecutter.package_name }}
+cd {{ cookiecutter.slug }}
 make help
 ```
 
