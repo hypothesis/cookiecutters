@@ -83,7 +83,6 @@ frontend-checkformatting:
 
 .PHONY: test
 $(call help,make test,"run the unit tests in Python {{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}")
-coverage: test
 test: python
 	@pyenv exec tox -qe tests
 {% if cookiecutter.get("frontend") == "yes" %}
@@ -99,7 +98,6 @@ frontend-test:
 {% set target = 'test-py%s'|format(python_version|pyformat(PyFormats.MAJOR_MINOR_FMT)) %}
 .PHONY: {{ target }}
 $(call help,make {{ target }},"run the unit tests in Python {{ python_version|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}")
-coverage: {{ target }}
 {{ target }}: python
 	@pyenv exec tox -qe py{{ python_version|pyformat(PyFormats.MAJOR_MINOR_FMT) }}-tests
 
@@ -107,7 +105,11 @@ coverage: {{ target }}
 .PHONY: coverage
 $(call help,make coverage,"run the tests and print the coverage report")
 coverage: python
-	@pyenv exec tox -qe coverage
+{%- if cookiecutter._directory == 'pyramid-app' %}
+	@pyenv exec tox -qe 'tests,coverage'
+{%- else %}
+	@pyenv exec tox --parallel -qe 'tests,py{{ "{" }}{{ python_versions()|rest|pyformat(PyFormats.MAJOR_MINOR_FMT)|separator(",") }}{{ "}" }}-tests,coverage'
+{%- endif %}
 
 .PHONY: functests
 $(call help,make functests,"run the functional tests in Python {{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}")
