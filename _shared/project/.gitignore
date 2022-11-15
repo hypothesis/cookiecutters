@@ -10,4 +10,6 @@ supervisord.log
 supervisord.pid
 .DS_Store
 .devdata.env
-{{- include("gitignore") }}
+{% if include_exists("gitignore") %}
+  {{- include("gitignore") -}}
+{% endif %}
