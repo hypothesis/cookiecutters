@@ -1,3 +1,4 @@
+import json
 import textwrap
 from pathlib import Path
 from textwrap import dedent
@@ -75,6 +76,7 @@ class LocalJinja2Extension(Extension):
                 "python_versions": self.python_versions,
                 "include_exists": self.include_exists,
                 "include": self.include,
+                "include_json": self.include_json,
                 "PyFormats": PyFormats,
             }
         )
@@ -100,7 +102,7 @@ class LocalJinja2Extension(Extension):
     def include_exists(self, context, path):
         """Return True if the project has a file at .cookiecutter/includes/{path}."""
         try:
-            self._readlines(context, path)
+            self._open(context, path)
         except (FileNotFoundError, NotADirectoryError):
             return False
         else:
@@ -110,11 +112,22 @@ class LocalJinja2Extension(Extension):
     def include(self, context, path, indent=0):
         """Return the lines from the project's .cookiecutter/includes/{path} or an empty string."""
         try:
-            lines = self._readlines(context, path)
+            file_ = self._open(context, path)
         except (FileNotFoundError, NotADirectoryError):
             return ""
 
-        return textwrap.indent("".join(lines), " " * indent)
+        return textwrap.indent("".join(file_.readlines()), " " * indent)
+
+    @pass_context
+    def include_json(self, context, path):
+        """Return the project's .cookiecutter/includes/{path} data or None.
+
+        Return the contents of the project's .cookiecutter/includes/{path} JSON
+        file deserialized into a Python object.
+
+        Return None if the project has no .cookiecutter/includes/{path} file.
+        """
+        return json.load(self._open(context, path))
 
     def oldest(self, python_versions):
         """Return the oldest from `python_versions` by version number."""
@@ -143,8 +156,8 @@ class LocalJinja2Extension(Extension):
         """Return `s` dedented."""
         return dedent(s)
 
-    def _readlines(self, context, path):
-        """Return the lines from `path` in the project's .cookiecutter/includes dir."""
+    def _open(self, context, path):
+        """Return the file at `path` in the project's .cookiecutter/includes dir."""
         target_dir = context["cookiecutter"].get("__target_dir__")
 
         if not target_dir:
@@ -154,4 +167,4 @@ class LocalJinja2Extension(Extension):
 
         includes = Path(target_dir) / ".cookiecutter/includes"
         full_path = Path(includes) / path
-        return open(full_path, "r").readlines()
+        return open(full_path, "r")
