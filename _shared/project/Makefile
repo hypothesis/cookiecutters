@@ -109,11 +109,11 @@ $(call help,make {{ target }},"run the unit tests in Python {{ python_version|py
 .PHONY: coverage
 $(call help,make coverage,"run the tests and print the coverage report")
 coverage: python
-{%- if cookiecutter._directory == 'pyramid-app' %}
+{% if cookiecutter._directory == 'pyramid-app' %}
 	@pyenv exec tox -qe 'tests,coverage'
-{%- else %}
+{% else %}
 	@pyenv exec tox --parallel -qe 'tests,py{{ "{" }}{{ python_versions()|rest|pyformat(PyFormats.MAJOR_MINOR_FMT)|separator(",") }}{{ "}" }}-tests,coverage'
-{%- endif %}
+{% endif %}
 
 .PHONY: functests
 $(call help,make functests,"run the functional tests in Python {{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}")
