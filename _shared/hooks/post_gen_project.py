@@ -54,6 +54,7 @@ def write_cookiecutter_json_file():
     del extra_context["_extensions"]
     del extra_context["_template"]
     del extra_context["_output_dir"]
+    del extra_context["_jinja2_env_vars"]
     if "__target_dir__" in extra_context:
         del extra_context["__target_dir__"]
     if "__ignore__" in extra_context:
