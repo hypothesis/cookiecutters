@@ -2,6 +2,7 @@ name: CI
 on:
   push:
   workflow_dispatch:
+  workflow_call:
   {% if cookiecutter._directory == 'pypackage' %}
   schedule:
   - cron: '0 1 * * *'
