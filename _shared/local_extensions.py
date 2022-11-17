@@ -165,6 +165,4 @@ class LocalJinja2Extension(Extension):
             # updating an existing project, so there are no include files yet.
             raise FileNotFoundError()
 
-        includes = Path(target_dir) / ".cookiecutter/includes"
-        full_path = Path(includes) / path
-        return open(full_path, "r")
+        return open(Path(target_dir) / ".cookiecutter/includes" / path, "r")
