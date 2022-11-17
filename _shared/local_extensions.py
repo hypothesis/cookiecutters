@@ -102,21 +102,19 @@ class LocalJinja2Extension(Extension):
     def include_exists(self, context, path):
         """Return True if the project has a file at .cookiecutter/includes/{path}."""
         try:
-            self._open(context, path)
+            with self._open(context, path):
+                return True
         except (FileNotFoundError, NotADirectoryError):
             return False
-        else:
-            return True
 
     @pass_context
     def include(self, context, path, indent=0):
         """Return the lines from the project's .cookiecutter/includes/{path} or an empty string."""
         try:
-            file_obj = self._open(context, path)
+            with self._open(context, path) as file_obj:
+                return textwrap.indent("".join(file_obj.readlines()), " " * indent)
         except (FileNotFoundError, NotADirectoryError):
             return ""
-
-        return textwrap.indent("".join(file_obj.readlines()), " " * indent)
 
     @pass_context
     def include_json(self, context, path):
@@ -127,7 +125,8 @@ class LocalJinja2Extension(Extension):
 
         Return None if the project has no .cookiecutter/includes/{path} file.
         """
-        return json.load(self._open(context, path))
+        with self._open(context, path) as file_obj:
+            return json.load(file_obj)
 
     def oldest(self, python_versions):
         """Return the oldest from `python_versions` by version number."""
@@ -165,5 +164,4 @@ class LocalJinja2Extension(Extension):
             # updating an existing project, so there are no include files yet.
             raise FileNotFoundError()
 
-        with open(Path(target_dir) / ".cookiecutter/includes" / path, "r") as file_obj:
-            return file_obj
+        return open(Path(target_dir) / ".cookiecutter/includes" / path, "r")
