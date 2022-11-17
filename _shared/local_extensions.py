@@ -112,11 +112,11 @@ class LocalJinja2Extension(Extension):
     def include(self, context, path, indent=0):
         """Return the lines from the project's .cookiecutter/includes/{path} or an empty string."""
         try:
-            file_ = self._open(context, path)
+            file_obj = self._open(context, path)
         except (FileNotFoundError, NotADirectoryError):
             return ""
 
-        return textwrap.indent("".join(file_.readlines()), " " * indent)
+        return textwrap.indent("".join(file_obj.readlines()), " " * indent)
 
     @pass_context
     def include_json(self, context, path):
