@@ -6,3 +6,7 @@
 #
 #     create-db <DB_NAME>
 make services args="exec postgres psql -U postgres -c 'CREATE DATABASE $1;'" > /dev/null 2>&1 || true
+
+{% if include_exists("create_db/tail") %}
+    {{- include("create_db/tail", indent=4) -}}
+{% endif %}
