@@ -126,14 +126,13 @@ def main():
 
         project_ignore_patterns = cookiecutter.get("__ignore__")
 
-        template_ignore_patterns = [".git/*"]
+        template_ignore_patterns = [".git/*", "docker-compose.yml"]
 
         {% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
         template_ignore_patterns.extend([
             "{{ cookiecutter.package_name }}/__init__.py",
             "{{ cookiecutter.package_name }}/app.py",
             "Dockerfile",
-            "docker-compose.yml",
             "package.json",
             "yarn.lock",
             ".docker.env",
