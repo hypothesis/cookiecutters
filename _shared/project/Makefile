@@ -44,6 +44,13 @@ shell: python
 	@pyenv exec tox -qe dev
 {% endif %}
 
+{% if cookiecutter.get("db") == "yes" %}
+.PHONY: sql
+$(call help,make sql,"Connect to the dev database with a psql shell")
+sql: python
+	@tox -qe dockercompose -- exec postgres psql --pset expanded=auto -U postgres
+
+{% endif %}
 .PHONY: lint
 $(call help,make lint,"lint the code and print any warnings")
 lint: python
