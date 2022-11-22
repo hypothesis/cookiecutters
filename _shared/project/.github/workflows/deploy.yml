@@ -1,0 +1,35 @@
+name: Deploy
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  ci:
+    name: CI
+    uses: ./.github/workflows/ci.yml
+  docker_hub:
+    name: Docker Hub
+    needs: [ci]
+    uses: hypothesis/workflows/.github/workflows/dockerhub.yml@main
+    with:
+      Application: {% raw %}${{ github.event.repository.name }}{% endraw +%}
+    secrets: inherit
+  {% for job_id, environment in include_json(".github/workflows/environments.json", {}).items() %}
+  {{ job_id }}:
+    name: {{ environment.github_environment_name }}
+    needs: [{{ (["docker_hub"] + environment.get("needs", []))|join(", ") }}]
+    uses: hypothesis/workflows/.github/workflows/deploy.yml@main
+    with:
+      operation: deploy
+      github_environment_name: {{ environment.get("github_environment_name", job_id) }}
+      github_environment_url: {{ environment.github_environment_url }}
+      aws_region: {{ environment.aws_region }}
+      elasticbeanstalk_application: {{ environment.elasticbeanstalk_application }}
+      elasticbeanstalk_environment: {{ environment.elasticbeanstalk_environment }}
+      docker_tag: {% raw %}${{ needs.Docker_Hub.outputs.docker_tag }}{% endraw +%}
+    secrets: inherit
+  {% endfor %}

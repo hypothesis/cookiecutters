@@ -1,0 +1,29 @@
+name: Redeploy
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+on:
+  workflow_dispatch:
+    {% if include_exists(".github/workflows/environments.json") %}
+    inputs:
+      {% for job_id, environment in include_json(".github/workflows/environments.json").items() %}
+      {{ job_id }}:
+        type: boolean
+        description: Redeploy {{ environment.get("github_environment_name", job_id) }}
+      {% endfor %}
+    {% endif %}
+jobs:
+  {% for job_id, environment in include_json(".github/workflows/environments.json", {}).items() %}
+  {{ job_id }}:
+    name: {{ environment.github_environment_name }}
+    if: inputs.{{ job_id }}
+    uses: hypothesis/workflows/.github/workflows/deploy.yml@main
+    with:
+      operation: redeploy
+      github_environment_name: {{ environment.get("github_environment_name", job_id) }}
+      github_environment_url: {{ environment.github_environment_url }}
+      aws_region: {{ environment.aws_region }}
+      elasticbeanstalk_application: {{ environment.elasticbeanstalk_application }}
+      elasticbeanstalk_environment: {{ environment.elasticbeanstalk_environment }}
+    secrets: inherit
+  {% endfor %}
