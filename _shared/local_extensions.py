@@ -117,7 +117,7 @@ class LocalJinja2Extension(Extension):
             return ""
 
     @pass_context
-    def include_json(self, context, path):
+    def include_json(self, context, path, default=None):
         """Return the project's .cookiecutter/includes/{path} data or None.
 
         Return the contents of the project's .cookiecutter/includes/{path} JSON
@@ -125,8 +125,11 @@ class LocalJinja2Extension(Extension):
 
         Return None if the project has no .cookiecutter/includes/{path} file.
         """
-        with self._open(context, path) as file_obj:
-            return json.load(file_obj)
+        try:
+            with self._open(context, path) as file_obj:
+                return json.load(file_obj)
+        except FileNotFoundError:
+            return default
 
     def oldest(self, python_versions):
         """Return the oldest from `python_versions` by version number."""

@@ -38,6 +38,14 @@ def remove_conditional_files():
     paths_to_remove.extend(["tests/functional/cli_test.py"])
     {% endif %}
 
+    {% if not include_exists(".github/workflows/environments.json") %}
+    # The deployment workflows only make sense if environments.json exists.
+    paths_to_remove.extend([
+        ".github/workflows/deploy.yml",
+        ".github/workflows/redeploy.yml",
+    ])
+    {% endif %}
+
     for path in paths_to_remove:
         if os.path.exists(path):
             try:
