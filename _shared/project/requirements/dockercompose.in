@@ -1,5 +1,0 @@
-pip-tools
-docker-compose
-{% if include_exists("requirements/dockercompose.in") %}
-    {{- include("requirements/dockercompose.in") -}}
-{% endif %}

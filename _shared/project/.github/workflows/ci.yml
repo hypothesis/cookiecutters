@@ -14,14 +14,21 @@ jobs:
     needs: tests
     {% endif %}
     runs-on: ubuntu-latest
-    {% if cookiecutter.get("db") == "yes" %}
+    {% if job in ["tests", "functests"] and has_services() %}
     services:
+      {% if cookiecutter.get("db") == "yes" %}
       postgres:
-        image: postgres:11.5-alpine
+        image: postgres:{{ cookiecutter.get("__postgres_version", "11.5-alpine") }}
         ports:
-        - 5432:5432
+        - {{ cookiecutter['__db_port'] }}:5432
+      {% endif %}
+      {% if include_exists(".github/workflows/ci/services.yml") %}
+        {{- include(".github/workflows/ci/services.yml", indent=6) -}}
+      {% endif %}
+    {% endif %}
+    {% if job in ["tests", "functests"] and cookiecutter.get("db") == "yes" %}
     env:
-      TEST_DATABASE_URL: postgresql://postgres@localhost:5432/{{ cookiecutter.package_name }}_test
+      TEST_DATABASE_URL: postgresql://postgres@localhost:{{ cookiecutter['__db_port'] }}/{{ cookiecutter.package_name }}_test
     {% endif %}
     {% if cookiecutter._directory == 'pypackage' and (job == 'tests' or job == 'functests') %}
     strategy:
@@ -52,9 +59,9 @@ jobs:
           restore-keys: |
             {{ job }}-{% raw %}${{ runner.os }}-tox-{% endraw +%}
       {% endif %}
-      {% if cookiecutter.get("db") == "yes" %}
+      {% if job in ["tests", "functests"] and cookiecutter.get("db") == "yes" %}
       - name: Create test database
-        run: psql -U postgres -h localhost -p 5432 -c 'CREATE DATABASE {{ cookiecutter.package_name }}_test'
+        run: psql -U postgres -h localhost -p {{ cookiecutter['__db_port'] }} -c 'CREATE DATABASE {{ cookiecutter.package_name }}_test'
       {% endif %}
       {% if cookiecutter.get("frontend") == "yes" %}
       - run: yarn install --frozen-lockfile

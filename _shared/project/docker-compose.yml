@@ -1,8 +1,19 @@
-version: "3.9"
 services:
-  web:
-    build: .
+  {% if cookiecutter.get("db") == "yes" %}
+  postgres:
+    image: postgres:{{ cookiecutter.get("__postgres_version", "11.5-alpine") }}
     ports:
-      - "8000:8000"
-  redis:
-    image: "redis:alpine"
+      - "127.0.0.1:{{ cookiecutter['__db_port'] }}:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 1s
+    {% if include_exists("docker-compose/postgres.yml") %}
+      {{- include("docker-compose/postgres.yml", indent=4) -}}
+    {% endif %}
+  {% endif %}
+  {% if include_exists("docker-compose/services.yml") %}
+    {{- include("docker-compose/services.yml", indent=2) -}}
+  {% endif %}
+{% if include_exists("docker-compose/tail.yml") %}
+  {{- include("docker-compose/tail.yml") -}}
+{% endif %}

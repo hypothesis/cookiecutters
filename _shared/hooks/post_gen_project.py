@@ -27,8 +27,8 @@ def remove_conditional_files():
     paths_to_remove.extend(["bin/make_devdata"])
     {% endif %}
 
-    {% if cookiecutter.get("services") != "yes" %}
-    paths_to_remove.extend(["docker-compose.yml", "requirements/dockercompose.in"])
+    {% if not has_services() %}
+    paths_to_remove.extend(["docker-compose.yml"])
     {% endif %}
 
     {% if cookiecutter.get("console_script") != "yes" %}
@@ -141,7 +141,6 @@ def main():
             "{{ cookiecutter.package_name }}/__init__.py",
             "{{ cookiecutter.package_name }}/app.py",
             "Dockerfile",
-            "docker-compose.yml",
             "package.json",
             "yarn.lock",
             ".docker.env",

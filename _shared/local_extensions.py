@@ -123,6 +123,7 @@ class LocalJinja2Extension(Extension):
                 "include_json": self.include_json,
                 "PyFormats": PyFormats,
                 "random_port_number": self.random_port_number,
+                "has_services": self.has_services,
             }
         )
         environment.filters.update(
@@ -212,6 +213,14 @@ class LocalJinja2Extension(Extension):
             random.shuffle(self._random_port_numbers)
 
         return self._random_port_numbers.pop()
+
+    @pass_context
+    def has_services(self, context):
+        """Return True if the project has services."""
+        cookiecutter = context["cookiecutter"]
+        return cookiecutter.get("db") == "yes" or self.include_exists(
+            context, "docker-compose/services.yml"
+        )
 
     def _open(self, context, path):
         """Return the file at `path` in the project's .cookiecutter/includes dir."""
