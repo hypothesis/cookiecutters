@@ -5,11 +5,11 @@ help = help::; @echo $$$$(tput bold)$(strip $(1)):$$$$(tput sgr0) $(strip $(2))
 $(call help,make help,print this help message)
 
 .PHONY: services
-{% if cookiecutter.get("services") == "yes" %}
+{% if has_services() %}
 $(call help,make services,start the services that the app needs)
 services: args?=up -d
 services: python
-	@tox -qe dockercompose -- $(args)
+	@docker compose $(args)
 {% endif %}
 
 .PHONY: devdata
@@ -48,7 +48,7 @@ shell: python
 .PHONY: sql
 $(call help,make sql,"Connect to the dev database with a psql shell")
 sql: python
-	@tox -qe dockercompose -- exec postgres psql --pset expanded=auto -U postgres
+	@docker compose exec postgres psql --pset expanded=auto -U postgres
 
 {% endif %}
 .PHONY: lint
@@ -203,7 +203,7 @@ $(call help,make docker-run,"run the app's docker image")
 docker-run:
 	@docker run \
 		--add-host host.docker.internal:host-gateway \
-{% if cookiecutter.get("services") == "yes" %}
+{% if has_services() %}
 		--net {{ cookiecutter.__docker_network }} \
 {% endif %}
 		--env-file .docker.env \

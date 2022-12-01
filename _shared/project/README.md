@@ -72,14 +72,10 @@
       The **Basic GitHub Checkout** method works best on Ubuntu.
       You _don't_ need to set up pyenv's shell integration ("shims"), you can
       [use pyenv without shims](https://github.com/pyenv/pyenv#using-pyenv-without-shims).
-    {% if cookiecutter.get("services") == "yes" %}
-    * [Docker](https://docs.docker.com/install/).
-      Follow the [instructions on the Docker website](https://docs.docker.com/install/)
-      to install it.  
-      You **don't** need to install Docker Compose, the development environment
-      will install it automatically for you in tox.  
-      You **do** need to set up the `docker` command to work without `sudo`,
-      on Linux this means following Docker's [Post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/).
+    {% if has_services() %}
+    * [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+      On Ubuntu follow [Install on Ubuntu](https://docs.docker.com/desktop/install/ubuntu/).
+      On macOS follow [Install on Mac](https://docs.docker.com/desktop/install/mac-install/).
     {% endif %}
     {% if cookiecutter.get("frontend") == "yes" %}
     * [Node](https://nodejs.org/) and npm.
@@ -96,7 +92,7 @@
     ```terminal
     git clone {{ cookiecutter.__github_url }}.git
     cd {{ cookiecutter.slug }}
-    {% if cookiecutter.get("services") == "yes" %}
+    {% if has_services() %}
     make services
     {% endif %}
     {% if cookiecutter.get("devdata") == "yes" %}
