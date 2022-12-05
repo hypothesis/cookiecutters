@@ -1,9 +1,53 @@
 import json
+import random
 import textwrap
 from pathlib import Path
 from textwrap import dedent
 
 from jinja2.ext import Extension, pass_context
+
+
+UNAVAILABLE_PORTS = (
+    *range(1, 1025),  # Ports <1025 are for privileged processes.
+    8080,  # Common alternative HTTP port.
+    5000,  # h's web process.
+    5001,  # h's websocket process.
+    5432,  # h's Postgres service.
+    5672,  # h's RabbitMQ service.
+    15672,  # h's RabbitMQ service.
+    9200,  # h's Elasticsearch service.
+    3000,  # The Hypothesis client's development server.
+    3002,  # Alternative port for the client's development server.
+    3001,  # The client's package server.
+    8000,  # Bouncer's web process.
+    9082,  # Via's web process.
+    9083,  # Via's NGINX process.
+    3032,  # Via HTML's uWSGI process.
+    9085,  # Via HTML's NGINX process.
+    9086,  # Via HTML's NGINX process.
+    9101,  # Via Test App's web process.
+    8001,  # LMS's web process.
+    48001,  # LMS's web-https process.
+    5433,  # LMS's Postgres service.
+    5674,  # LMS's RabbitMQ service.
+    15674,  # LMS's RabbitMQ service.
+    9099,  # Checkmate's web process.
+    5434,  # Checkmate's Postgres service.
+    5673,  # Checkmate's RabbitMQ service.
+    15673,  # Checkmate's RabbitMQ service.
+    4000,  # Report's Metabase service.
+    5435,  # Report's metabase-postgres service.
+    5436,  # Report's Postgres service.
+    5437,  # cookiecutter-pypackage-test's Postgres service.
+    9202,  # cookiecutter-pyapp-test's Elasticsearch service.
+    9800,  # cookiecutter-pyramid-app-test's web process.
+    5438,  # cookiecutter-pyramid-app-test's Postgres service.
+    9201,  # cookiecutter-pyramid-app-test's Elasticsearch service.
+    5675,  # cookiecutter-pyramid-app-test's RabbitMQ service.
+    15675,  # cookiecutter-pyramid-app-test's RabbitMQ service.
+    5050,  # Publisher Account Test Site's web process.
+    9000,  # BioPub's web process.
+)
 
 
 class PyFormats:
@@ -78,6 +122,7 @@ class LocalJinja2Extension(Extension):
                 "include": self.include,
                 "include_json": self.include_json,
                 "PyFormats": PyFormats,
+                "random_port_number": self.random_port_number,
             }
         )
         environment.filters.update(
@@ -157,6 +202,16 @@ class LocalJinja2Extension(Extension):
     def dedent(self, s):
         """Return `s` dedented."""
         return dedent(s)
+
+    def random_port_number(self):
+        """Return a randomly-generated port number."""
+        if not hasattr(self, "_random_port_numbers"):
+            self._random_port_numbers = [
+                port for port in range(1, 65536) if port not in UNAVAILABLE_PORTS
+            ]
+            random.shuffle(self._random_port_numbers)
+
+        return self._random_port_numbers.pop()
 
     def _open(self, context, path):
         """Return the file at `path` in the project's .cookiecutter/includes dir."""
