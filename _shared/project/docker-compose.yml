@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:{{ cookiecutter.get("__postgres_version", "11.5-alpine") }}
     ports:
-      - "127.0.0.1:{{ cookiecutter['__db_port'] }}:5432"
+      - "127.0.0.1:{{ cookiecutter['__postgres_port'] }}:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 1s
