@@ -156,11 +156,8 @@ class LocalJinja2Extension(Extension):
     @pass_context
     def include(self, context, path, indent=0):
         """Return the lines from the project's .cookiecutter/includes/{path} or an empty string."""
-        try:
-            with self._open(context, path) as file_obj:
-                return textwrap.indent("".join(file_obj.readlines()), " " * indent)
-        except (FileNotFoundError, NotADirectoryError):
-            return ""
+        with self._open(context, path) as file_obj:
+            return textwrap.indent("".join(file_obj.readlines()), " " * indent)
 
     @pass_context
     def include_json(self, context, path, default=None):
@@ -225,10 +222,5 @@ class LocalJinja2Extension(Extension):
     def _open(self, context, path):
         """Return the file at `path` in the project's .cookiecutter/includes dir."""
         target_dir = context["cookiecutter"].get("__target_dir__")
-
-        if not target_dir:
-            # We're creating a new project for the first time rather than
-            # updating an existing project, so there are no include files yet.
-            raise FileNotFoundError()
 
         return open(Path(target_dir) / ".cookiecutter/includes" / path, "r")

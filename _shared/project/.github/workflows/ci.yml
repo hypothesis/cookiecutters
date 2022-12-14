@@ -107,4 +107,6 @@ jobs:
     - name: Test
       run: make frontend-test
   {% endif %}
-  {{- include(".github/workflows/ci.yml", indent=2) -}}
+  {% if include_exists(".github/workflows/ci.yml") %}
+    {{- include(".github/workflows/ci.yml", indent=2) -}}
+  {% endif %}
