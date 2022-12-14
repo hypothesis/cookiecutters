@@ -44,7 +44,7 @@ shell: python
 	@pyenv exec tox -qe dev
 {% endif %}
 
-{% if cookiecutter.get("db") == "yes" %}
+{% if cookiecutter.get("postgres") == "yes" %}
 .PHONY: sql
 $(call help,make sql,"Connect to the dev database with a psql shell")
 sql: python

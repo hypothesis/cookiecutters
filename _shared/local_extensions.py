@@ -218,7 +218,7 @@ class LocalJinja2Extension(Extension):
     def has_services(self, context):
         """Return True if the project has services."""
         cookiecutter = context["cookiecutter"]
-        return cookiecutter.get("db") == "yes" or self.include_exists(
+        return cookiecutter.get("postgres") == "yes" or self.include_exists(
             context, "docker-compose/services.yml"
         )
 

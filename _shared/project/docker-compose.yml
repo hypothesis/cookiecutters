@@ -1,5 +1,5 @@
 services:
-  {% if cookiecutter.get("db") == "yes" %}
+  {% if cookiecutter.get("postgres") == "yes" %}
   postgres:
     image: postgres:{{ cookiecutter.get("__postgres_version", "11.5-alpine") }}
     ports:
