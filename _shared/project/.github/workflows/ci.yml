@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     {% if job in ["tests", "functests"] and has_services() %}
     services:
-      {% if cookiecutter.get("db") == "yes" %}
+      {% if cookiecutter.get("postgres") == "yes" %}
       postgres:
         image: postgres:{{ cookiecutter.get("__postgres_version", "11.5-alpine") }}
         ports:
@@ -26,7 +26,7 @@ jobs:
         {{- include(".github/workflows/ci/services.yml", indent=6) -}}
       {% endif %}
     {% endif %}
-    {% if job in ["tests", "functests"] and cookiecutter.get("db") == "yes" %}
+    {% if job in ["tests", "functests"] and cookiecutter.get("postgres") == "yes" %}
     env:
       TEST_DATABASE_URL: postgresql://postgres@localhost:{{ cookiecutter['__db_port'] }}/{{ cookiecutter.package_name }}_test
     {% endif %}
@@ -59,7 +59,7 @@ jobs:
           restore-keys: |
             {{ job }}-{% raw %}${{ runner.os }}-tox-{% endraw +%}
       {% endif %}
-      {% if job in ["tests", "functests"] and cookiecutter.get("db") == "yes" %}
+      {% if job in ["tests", "functests"] and cookiecutter.get("postgres") == "yes" %}
       - name: Create test database
         run: psql -U postgres -h localhost -p {{ cookiecutter['__db_port'] }} -c 'CREATE DATABASE {{ cookiecutter.package_name }}_test'
       {% endif %}

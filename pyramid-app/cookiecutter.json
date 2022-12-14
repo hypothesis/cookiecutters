@@ -15,7 +15,7 @@
     "devdata": ["no", "yes"],
     "frontend": ["no", "yes"],
     "__frontend_typechecking": "{{ cookiecutter.frontend }}",
-    "db": ["no", "yes"],
+    "postgres": ["no", "yes"],
     "docker": ["no", "yes"],
     "__db_port": "{{ random_port_number() }}",
     "__docker_namespace": "{{ cookiecutter.github_owner }}",

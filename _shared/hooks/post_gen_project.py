@@ -19,7 +19,7 @@ def remove_conditional_files():
     paths_to_remove.extend(["package.json", "yarn.lock"])
     {% endif %}
 
-    {% if cookiecutter.get("db") != "yes" %}
+    {% if cookiecutter.get("postgres") != "yes" %}
     paths_to_remove.extend(["bin/create-db"])
     {% endif %}
 
