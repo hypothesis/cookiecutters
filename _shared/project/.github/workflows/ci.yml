@@ -26,10 +26,6 @@ jobs:
         {{- include(".github/workflows/ci/services.yml", indent=6) -}}
       {% endif %}
     {% endif %}
-    {% if job in ["tests", "functests"] and cookiecutter.get("postgres") == "yes" %}
-    env:
-      TEST_DATABASE_URL: postgresql://postgres@localhost:{{ cookiecutter['__postgres_port'] }}/{{ cookiecutter.package_name }}_test
-    {% endif %}
     {% if cookiecutter._directory == 'pypackage' and (job == 'tests' or job == 'functests') %}
     strategy:
       matrix:
