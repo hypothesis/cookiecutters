@@ -3,6 +3,10 @@ pyramid
 gunicorn
 newrelic
 {% endif %}
+{% if cookiecutter.get("postgres") == "yes" %}
+sqlalchemy
+psycopg2
+{% endif %}
 {% if include_exists("requirements/prod.in") %}
     {{- include("requirements/prod.in") -}}
 {% endif %}
