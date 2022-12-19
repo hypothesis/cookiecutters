@@ -31,6 +31,10 @@ def remove_conditional_files():
     paths_to_remove.extend(["docker-compose.yml"])
     {% endif %}
 
+    {% if cookiecutter.get("pypi") != "yes" %}
+    paths_to_remove.extend([".github/workflows/pypi.yml"])
+    {% endif %}
+
     {% if cookiecutter.get("console_script") != "yes" %}
     paths_to_remove.extend(["src/{{ cookiecutter.package_name }}/__main__.py"])
     paths_to_remove.extend(["src/{{ cookiecutter.package_name }}/cli.py"])
