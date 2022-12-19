@@ -2,7 +2,7 @@
     {% if cookiecutter.get("visibility") == "public" %}
     <a href="{{ cookiecutter.__github_url }}/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://img.shields.io/github/workflow/status/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}/CI/main"></a>
     {% endif %}
-    {% if cookiecutter._directory == 'pypackage' %}
+    {% if cookiecutter.get("pypi") == "yes" %}
     <a href="{{ cookiecutter.__pypi_url }}"><img src="https://img.shields.io/pypi/v/{{ cookiecutter.slug }}"></a>
     {% endif %}
     <a><img src="https://img.shields.io/badge/python-{{ python_versions()|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT)|separator(" | ") }}-success"></a>
@@ -25,7 +25,11 @@
     First [install pipx](https://pypa.github.io/pipx/#install-pipx) then run:
 
     ```terminal
+{% if cookiecutter.get("pypi") == "yes" %}
     pipx install {{ cookiecutter.slug }}
+{% else %}
+    pipx install git+{{ cookiecutter.__github_url }}.git
+{% endif %}
     ```
 
     You now have {{ cookiecutter.name }} installed! For some help run:
@@ -270,7 +274,7 @@
     {{ installing()|dedent }}
 {% endif %}
 {{ setting_up()|dedent }}
-{% if cookiecutter._directory == 'pypackage' -%}
+{% if cookiecutter.get("pypi") == "yes" -%}
     {{ releasing()|dedent }}
 {% endif %}
 {% if cookiecutter._directory in ['pyapp', 'pyramid-app'] -%}

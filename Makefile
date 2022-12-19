@@ -12,7 +12,7 @@ test sure: test-pypackage test-pyapp test-pyramid-app
 
 .PHONY: test-pypackage
 test-pypackage:
-	@bin/make_test pypackage console_script=yes db=yes devdata=yes services=yes
+	@bin/make_test pypackage console_script=yes db=yes devdata=yes pypi=yes services=yes
 
 .PHONY: test-pyapp
 test-pyapp:

@@ -12,6 +12,7 @@
     "postgres": ["no", "yes"],
     "create_github_repo": ["no", "yes"],
     "dependabot_pip_interval": ["monthly", "weekly", "daily"],
+    "pypi": ["no", "yes"],
     "__postgres_port": "{{ random_port_number() }}",
     "__entry_point": "{{ cookiecutter.slug }}",
     "__github_url": "https://github.com/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}",
