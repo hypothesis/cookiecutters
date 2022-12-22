@@ -1,0 +1,4 @@
+#!/bin/bash
+# Return the list of all cookiecuttered repos in the hypothesis GitHub organization.
+
+gh api -X GET search/repositories --paginate -f 'q=cookiecutter.json in:readme org:hypothesis archived:false' -q '.items | .[] | .full_name'
