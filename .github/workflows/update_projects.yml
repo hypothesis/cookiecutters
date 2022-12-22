@@ -5,11 +5,29 @@ on:
       repos:
         type: string
 jobs:
-  update_projects:
+  find_repos:
+    name: Find repos
+    runs-on: ubuntu-latest
+    outputs:
+      repos: ${{ steps.find_repos.outputs.repos }}
+    steps:
+      - name: Find repos
+        id: find_repos
+        run: |
+          if [ -z "${{ inputs.repos }}" ]
+          then
+            echo "REPOS=$(gh api -X GET search/repositories --paginate -f 'q=cookiecutter.json in:readme org:hypothesis archived:false' -q '.items | .[] | .full_name' | xargs)" >> $GITHUB_OUTPUT
+          else
+            echo "REPOS=${{ inputs.repos }}" >> GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  update_repos:
     name: Update projects
     uses: hypothesis/commando/.github/workflows/commando.yml@main
+    needs: find_repos
     with:
-      repos: ${{ inputs.repos }}
+      repos: ${{ needs.find_repos.outputs.repos }}
       branch: cookiecutter
       command: tox -e template
       commit_message: Apply updates from cookiecutter
