@@ -43,8 +43,8 @@ jobs:
       - name: Read files
         id: read_files
         run: |
-          echo COMMIT_MESSAGE=$(cat commit_message.txt) >> $GITHUB_OUTPUT
-          echo PR_BODY=$(cat pr_body.md) >> $GITHUB_OUTPUT
+          echo COMMIT_MESSAGE="$(cat commit_message.txt)" >> $GITHUB_OUTPUT
+          echo PR_BODY="$(cat pr_body.md)" >> $GITHUB_OUTPUT
   update_repos:
     name: Update repos
     uses: hypothesis/commando/.github/workflows/commando.yml@main
