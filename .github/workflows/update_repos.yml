@@ -7,19 +7,26 @@ on:
         default: __all_cookiecuttered_repos__
         description: "Enter a space-separated list of repos to update. For example: 'hypothesis/repo-1 hypothesis/repo-2 hypothesis/repo-3'. By default it will search for and update all cookiecuttered repos in the Hypothesis GitHub organization."
 jobs:
-  find_repos:
-    name: Find repos
+  get_token:
+    name: Get GitHub API token
     runs-on: ubuntu-latest
     outputs:
-      repos: ${{ steps.find_repos.outputs.repos }}
+      GITHUB_TOKEN: ${{ steps.github_token.outputs.repos }}
     steps:
       - run: python3.10 -m pip install pipx
       - run: python3.10 -m pipx install "git+https://github.com/hypothesis/gha-token.git"
-      - name: Get GitHub token
+      - name: Get GitHub API token
         id: github_token
         run: echo GITHUB_TOKEN=$(gha-token --app-id 274948 --installation-id 32440510 --private-key "$PRIVATE_KEY") >> $GITHUB_OUTPUT
         env:
           PRIVATE_KEY: ${{ secrets.HYPOTHESIS_GITHUB_APP_PRIVATE_KEY }}
+  find_repos:
+    name: Find repos
+    needs: get_token
+    runs-on: ubuntu-latest
+    outputs:
+      repos: ${{ steps.find_repos.outputs.repos }}
+    steps:
       - uses: actions/checkout@v3
       - name: Find repos
         id: find_repos
@@ -31,11 +38,11 @@ jobs:
             echo "REPOS=${{ inputs.repos }}" >> $GITHUB_OUTPUT
           fi
         env:
-          GITHUB_TOKEN: ${{ steps.github_token.outputs.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ needs.get_token.outputs.GITHUB_TOKEN }}
   update_repos:
     name: Update repos
     uses: hypothesis/commando/.github/workflows/commando.yml@main
-    needs: find_repos
+    needs: [get_token,find_repos]
     with:
       repos: ${{ needs.find_repos.outputs.repos }}
       branch: cookiecutter
@@ -45,3 +52,4 @@ jobs:
       pr_body: "Apply the latest updates from [our cookiecutter template](https://github.com/hypothesis/cookiecutters) to this repo."
     secrets:
       HYPOTHESIS_GITHUB_APP_PRIVATE_KEY: ${{ secrets.HYPOTHESIS_GITHUB_APP_PRIVATE_KEY }}
+      HYPOTHESIS_GITHUB_APP_TOKEN: ${{needs.get_token.outputs.GITHUB_TOKEN }}
