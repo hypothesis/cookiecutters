@@ -1,6 +1,9 @@
 name: Update projects
 on:
   workflow_dispatch:
+    inputs:
+      repos:
+        type: string
 jobs:
   update_projects:
     name: Update projects
@@ -12,8 +15,5 @@ jobs:
       commit_message: Apply updates from cookiecutter
       pr_title: Apply updates from cookiecutter
       pr_body: "Apply the latest updates from [our cookiecutter template](https://github.com/hypothesis/cookiecutters) to this project."
-    inputs:
-      repos:
-        type: string
     secrets:
       HYPOTHESIS_GITHUB_APP_PRIVATE_KEY: ${{ secrets.HYPOTHESIS_GITHUB_APP_PRIVATE_KEY }}
