@@ -9,17 +9,9 @@ on:
 jobs:
   get_token:
     name: Get GitHub API token
-    runs-on: ubuntu-latest
-    outputs:
-      GITHUB_TOKEN: ${{ steps.github_token.outputs.GITHUB_TOKEN }}
-    steps:
-      - run: python3.10 -m pip install pipx
-      - run: python3.10 -m pipx install "git+https://github.com/hypothesis/gha-token.git"
-      - name: Get GitHub API token
-        id: github_token
-        run: echo GITHUB_TOKEN=$(gha-token --app-id 274948 --installation-id 32440510 --private-key "$PRIVATE_KEY") >> $GITHUB_OUTPUT
-        env:
-          PRIVATE_KEY: ${{ secrets.HYPOTHESIS_GITHUB_APP_PRIVATE_KEY }}
+    uses: hypothesis/gha-token/.github/workflows/get_token.yml@main
+    secrets:
+      HYPOTHESIS_GITHUB_APP_PRIVATE_KEY: ${{ secrets.HYPOTHESIS_GITHUB_APP_PRIVATE_KEY }}
   find_repos:
     name: Find repos
     needs: get_token
