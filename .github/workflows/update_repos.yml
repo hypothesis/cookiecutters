@@ -5,7 +5,7 @@ on:
       repos:
         type: string
         default: __all_cookiecuttered_repos__
-        description: "A space-separated list of repos to update. For example: 'hypothesis/repo-1 hypothesis/repo-2 hypothesis/repo-3'. By default it will search for and update all cookiecuttered repos in the Hypothesis GitHub organization."
+        description: "Enter a space-separated list of repos to update. For example: 'hypothesis/repo-1 hypothesis/repo-2 hypothesis/repo-3'. By default it will search for and update all cookiecuttered repos in the Hypothesis GitHub organization."
 jobs:
   find_repos:
     name: Find repos
