@@ -1,6 +1,0 @@
-Apply updates from cookiecutter
-
-This automated commit applies the latest updates from our cookiecutters to this
-repo:
-
-    https://github.com/hypothesis/cookiecutters
