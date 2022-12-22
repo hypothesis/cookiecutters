@@ -1,0 +1,14 @@
+name: Update projects
+on:
+  workflow_dispatch:
+jobs:
+  update_projects:
+    name: Update projects
+    uses: hypothesis/commando/.github/workflows/commando.yml@main
+    with:
+      repos: hypothesis/cookiecutter-pypackage-test hypothesis/cookiecutter-pyapp-test hypothesis/cookiecutter-pyramid-app-test
+      branch: cookiecutter
+      command: tox -e template
+      commit_message: Apply updates from cookiecutter
+      pr_title: Apply updates from cookiecutter
+      pr_body: "Apply the latest updates from [our cookiecutter template](https://github.com/hypothesis/cookiecutters) to this project."
