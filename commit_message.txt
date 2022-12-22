@@ -1,6 +1,6 @@
 Apply updates from cookiecutter
 
-This automated commit applies the latest updates from our cookiecutters to this
-repo:
+This automated commit applies the latest updates from our cookiecutters [1] to
+this repo.
 
-    https://github.com/hypothesis/cookiecutters
+[1]: https://github.com/hypothesis/cookiecutters
