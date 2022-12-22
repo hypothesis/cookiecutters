@@ -1,4 +1,4 @@
-name: Update projects
+name: Update repos
 on:
   workflow_dispatch:
     inputs:
@@ -23,7 +23,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   update_repos:
-    name: Update projects
+    name: Update repos
     uses: hypothesis/commando/.github/workflows/commando.yml@main
     needs: find_repos
     with:
@@ -32,6 +32,6 @@ jobs:
       command: tox -e template
       commit_message: Apply updates from cookiecutter
       pr_title: Apply updates from cookiecutter
-      pr_body: "Apply the latest updates from [our cookiecutter template](https://github.com/hypothesis/cookiecutters) to this project."
+      pr_body: "Apply the latest updates from [our cookiecutter template](https://github.com/hypothesis/cookiecutters) to this repo."
     secrets:
       HYPOTHESIS_GITHUB_APP_PRIVATE_KEY: ${{ secrets.HYPOTHESIS_GITHUB_APP_PRIVATE_KEY }}
