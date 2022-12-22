@@ -32,16 +32,28 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ steps.github_token.outputs.GITHUB_TOKEN }}
+  read_files:
+    name: Read files
+    runs-on: ubuntu-latest
+    outputs:
+      commit_message: ${{ steps.read_files.outputs.commit_message }}
+      pr_body: ${{ steps.read_files.outputs.pr_body }}
+    steps:
+      - name: Read files
+        id: read_files
+        run: |
+          echo "COMMIT_MESSAGE=$(cat commit_message.txt)" >> $GITHUB_OUTPUT
+          echo "PR_BODY=$(cat pr_body.md)" >> $GITHUB_OUTPUT
   update_repos:
     name: Update repos
     uses: hypothesis/commando/.github/workflows/commando.yml@main
-    needs: find_repos
+    needs: [find_repos,read_files]
     with:
       repos: ${{ needs.find_repos.outputs.repos }}
       branch: cookiecutter
       command: tox -e template
-      commit_message: Apply updates from cookiecutter
+      commit_message: ${{ needs.read_files.outputs.commit_message }}
       pr_title: Apply updates from cookiecutter
-      pr_body: "Apply the latest updates from [our cookiecutter template](https://github.com/hypothesis/cookiecutters) to this repo."
+      pr_body: ${{ needs.read_files.outputs.pr_body }}
     secrets:
       HYPOTHESIS_GITHUB_APP_PRIVATE_KEY: ${{ secrets.HYPOTHESIS_GITHUB_APP_PRIVATE_KEY }}
