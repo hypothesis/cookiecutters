@@ -18,7 +18,7 @@ jobs:
           then
             echo "REPOS=$(gh api -X GET search/repositories --paginate -f 'q=cookiecutter.json in:readme org:hypothesis archived:false' -q '.items | .[] | .full_name' | xargs)" >> $GITHUB_OUTPUT
           else
-            echo "REPOS='${{ inputs.repos }}'" >> $GITHUB_OUTPUT
+            echo "REPOS=${{ inputs.repos }}" >> $GITHUB_OUTPUT
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
