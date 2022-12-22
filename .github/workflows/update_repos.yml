@@ -11,6 +11,7 @@ jobs:
     outputs:
       repos: ${{ steps.find_repos.outputs.repos }}
     steps:
+      - uses: actions/checkout@v3
       - name: Find repos
         id: find_repos
         run: |
