@@ -11,7 +11,7 @@ jobs:
     name: Get GitHub API token
     runs-on: ubuntu-latest
     outputs:
-      GITHUB_TOKEN: ${{ steps.github_token.outputs.repos }}
+      GITHUB_TOKEN: ${{ steps.github_token.outputs.GITHUB_TOKEN }}
     steps:
       - run: python3.10 -m pip install pipx
       - run: python3.10 -m pipx install "git+https://github.com/hypothesis/gha-token.git"
@@ -52,4 +52,4 @@ jobs:
       pr_body: "Apply the latest updates from [our cookiecutter template](https://github.com/hypothesis/cookiecutters) to this repo."
     secrets:
       HYPOTHESIS_GITHUB_APP_PRIVATE_KEY: ${{ secrets.HYPOTHESIS_GITHUB_APP_PRIVATE_KEY }}
-      HYPOTHESIS_GITHUB_APP_TOKEN: ${{needs.get_token.outputs.GITHUB_TOKEN }}
+      HYPOTHESIS_GITHUB_APP_TOKEN: ${{ needs.get_token.outputs.GITHUB_TOKEN }}
