@@ -39,6 +39,7 @@ jobs:
       commit_message: ${{ steps.read_files.outputs.commit_message }}
       pr_body: ${{ steps.read_files.outputs.pr_body }}
     steps:
+      - uses: actions/checkout@v3
       - name: Read files
         id: read_files
         run: |
