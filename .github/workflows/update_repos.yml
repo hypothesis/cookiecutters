@@ -7,20 +7,39 @@ on:
         default: __all_cookiecuttered_repos__
         description: "Enter a space-separated list of repos to update. For example: 'hypothesis/repo-1 hypothesis/repo-2 hypothesis/repo-3'. By default it will search for and update all cookiecuttered repos in the Hypothesis GitHub organization."
 jobs:
-  find_repos:
-    name: Find repos
+  update_repos:
+    name: Update repos
     runs-on: ubuntu-latest
-    outputs:
-      repos: ${{ steps.find_repos.outputs.repos }}
     steps:
-      - run: python3.10 -m pip install pipx
-      - run: python3.10 -m pipx install "git+https://github.com/hypothesis/gha-token.git"
+      - name: Install Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install pipx
+        run: python3.10 -m pip install pipx
+      - name: Install tox
+        run: python3.10 -m pipx install "tox<4"
+      - name: Install gh-pr-upsert
+        run: python3.10 -m pipx install "git+https://github.com/hypothesis/gh-pr-upsert.git@initial-implementation"
+      - name: Install Commando
+        run: python3.10 -m pipx install "git+https://github.com/hypothesis/commando.git@initial-implementation"
+      - name: Install gha-token
+        run: python3.10 -m pipx install "git+https://github.com/hypothesis/gha-token.git"
+      - name: Configure git
+        run: |
+          git config --global user.name "GitHub Actions Cookiecutter Workflow"
+          git config --global user.email "<>"
       - name: Get GitHub token
         id: github_token
         run: echo GITHUB_TOKEN=$(gha-token --app-id 274948 --installation-id 32440510 --private-key "$PRIVATE_KEY") >> $GITHUB_OUTPUT
         env:
           PRIVATE_KEY: ${{ secrets.HYPOTHESIS_GITHUB_APP_PRIVATE_KEY }}
-      - uses: actions/checkout@v3
+      - name: Set up git authentication
+        run: gh auth setup-git
+        env:
+          GITHUB_TOKEN: ${{ steps.github_token.outputs.GITHUB_TOKEN }}
+      - name: Checkout repo
+        uses: actions/checkout@v3
       - name: Find repos
         id: find_repos
         run: |
@@ -32,16 +51,7 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ steps.github_token.outputs.GITHUB_TOKEN }}
-  update_repos:
-    name: Update repos
-    uses: hypothesis/commando/.github/workflows/commando.yml@main
-    needs: find_repos
-    with:
-      repos: ${{ needs.find_repos.outputs.repos }}
-      branch: cookiecutter
-      command: tox -e template
-      commit_message: Apply updates from cookiecutter
-      pr_title: Apply updates from cookiecutter
-      pr_body: "Apply the latest updates from [our cookiecutter template](https://github.com/hypothesis/cookiecutters) to this repo."
-    secrets:
-      HYPOTHESIS_GITHUB_APP_PRIVATE_KEY: ${{ secrets.HYPOTHESIS_GITHUB_APP_PRIVATE_KEY }}
+      - name: Update repos
+        run: commando --repos ${{ steps.find_repos.outputs.repos }} --branch cookiecutter --command "tox -e template" --commit-message-file commit_message.txt --pr-title "Apply updates from cookiecutter" --pr-body-file pr_body.md
+        env:
+          GITHUB_TOKEN: ${{ steps.github_token.outputs.GITHUB_TOKEN }}
