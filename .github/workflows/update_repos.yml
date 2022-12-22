@@ -4,6 +4,7 @@ on:
     inputs:
       repos:
         type: string
+        default: __all_cookiecuttered_repos__
 jobs:
   find_repos:
     name: Find repos
@@ -15,7 +16,7 @@ jobs:
       - name: Find repos
         id: find_repos
         run: |
-          if [ -z "${{ inputs.repos }}" ]
+          if [ "${{ inputs.repos }}" = "__all_cookiecuttered_repos__" ]
           then
             echo "REPOS=$(bin/find_repos | xargs)" >> $GITHUB_OUTPUT
           else
