@@ -9,7 +9,7 @@ jobs:
     name: Update projects
     uses: hypothesis/commando/.github/workflows/commando.yml@main
     with:
-      repos: hypothesis/cookiecutter-pypackage-test hypothesis/cookiecutter-pyapp-test hypothesis/cookiecutter-pyramid-app-test
+      repos: ${{ inputs.repos }}
       branch: cookiecutter
       command: tox -e template
       commit_message: Apply updates from cookiecutter
