@@ -18,6 +18,7 @@
     "__docker_namespace": "{{ cookiecutter.github_owner }}",
     "__docker_network": "{{ cookiecutter.package_name }}_default",
     "__github_url": "https://github.com/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}",
+    "__copyright_year": "{% now 'utc', '%Y' %}",
     "_extensions": ["local_extensions.LocalJinja2Extension"],
     "_directory": "pyapp",
     "__hdev_project_type": "application",
