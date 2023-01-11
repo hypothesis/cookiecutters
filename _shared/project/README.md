@@ -1,6 +1,6 @@
 {%- macro badges() %}
     {% if cookiecutter.get("visibility") == "public" %}
-    <a href="{{ cookiecutter.__github_url }}/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://img.shields.io/github/workflow/status/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}/CI/main"></a>
+    <a href="{{ cookiecutter.__github_url }}/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://img.shields.io/github/actions/workflow/status/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}/ci.yml?branch=main"></a>
     {% endif %}
     {% if cookiecutter.get("pypi") == "yes" %}
     <a href="{{ cookiecutter.__pypi_url }}"><img src="https://img.shields.io/pypi/v/{{ cookiecutter.slug }}"></a>
