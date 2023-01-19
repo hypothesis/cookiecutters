@@ -4,24 +4,40 @@ on:
     paths-ignore:
       - '.cookiecutter/*'
       - '.github/dependabot.yml'
+{% if include_exists(".github/workflows/environments.json") %}
       - '.github/workflows/deploy.yml'
       - '.github/workflows/redeploy.yml'
+{% endif %}
+{% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
       - 'bin/logger'
+{% endif %}
       - 'bin/make_python'
       - 'bin/make_template'
+{% if cookiecutter._directory == 'pyramid-app' %}
       - 'conf/development.ini'
       - 'conf/production.ini'
+{% endif %}
+{% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
       - 'conf/supervisord*.conf'
+{% endif %}
       - 'docs/*'
+{% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
       - 'requirements/*.in'
       - 'requirements/dev.txt'
+{% endif %}
+{% if cookiecutter.get("docker") == "yes" %}
       - '.docker.env'
+{% endif %}
       - '**/.gitignore'
       - '.python-version'
+{% if cookiecutter.get("docker") == "yes" %}
       - 'Dockerfile'
+{% endif %}
       - 'LICENSE'
       - '*.md'
+{% if has_services() %}
       - 'docker-compose.yml'
+{% endif %}
   workflow_dispatch:
   workflow_call:
   {% if cookiecutter._directory == 'pypackage' %}
