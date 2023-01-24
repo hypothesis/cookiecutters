@@ -29,8 +29,8 @@ jobs:
         run: python3.10 -m pipx install "git+https://github.com/hypothesis/gha-token.git"
       - name: Configure git
         run: |
-          git config --global user.name "GitHub"
-          git config --global user.email "noreply@github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Get GitHub token
         id: github_token
         run: echo GITHUB_TOKEN=$(gha-token --app-id 274948 --installation-id 32440510 --private-key "$PRIVATE_KEY") >> $GITHUB_OUTPUT
