@@ -42,6 +42,8 @@ jobs:
           GITHUB_TOKEN: ${{ steps.github_token.outputs.GITHUB_TOKEN }}
       - name: Checkout repo
         uses: actions/checkout@v3
+      - name: Test find repos
+        run: bin/find_repos
       - name: Find repos
         id: find_repos
         run: |
