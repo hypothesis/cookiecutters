@@ -40,10 +40,8 @@ on:
 {% endif %}
   workflow_dispatch:
   workflow_call:
-  {% if cookiecutter._directory == 'pypackage' %}
   schedule:
   - cron: '0 1 * * *'
-  {% endif %}
 jobs:
   {% for job in ['format', 'lint', 'tests', 'coverage', 'functests'] %}
   {{ job|capitalize }}:
