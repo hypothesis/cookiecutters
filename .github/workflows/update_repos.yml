@@ -45,7 +45,7 @@ jobs:
       - name: Find repos
         id: find_repos
         run: |
-          if [ "${{ inputs.repos }}" = "__all_cookiecuttered_repos__" ]
+          if [ "${{ inputs.repos || '__all_cookiecuttered_repos__' }}" = "__all_cookiecuttered_repos__" ]
           then
             echo "REPOS=$(bin/find_repos | xargs)" >> $GITHUB_OUTPUT
           else
