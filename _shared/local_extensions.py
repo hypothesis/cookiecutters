@@ -40,11 +40,11 @@ UNAVAILABLE_PORTS = (
     5436,  # Report's Postgres service.
     5437,  # cookiecutter-pypackage-test's Postgres service.
     9202,  # cookiecutter-pyapp-test's Elasticsearch service.
-    9800,  # cookiecutter-pyramid-app-test's web process.
-    5438,  # cookiecutter-pyramid-app-test's Postgres service.
-    9201,  # cookiecutter-pyramid-app-test's Elasticsearch service.
-    5675,  # cookiecutter-pyramid-app-test's RabbitMQ service.
-    15675,  # cookiecutter-pyramid-app-test's RabbitMQ service.
+    9800,  # test-pyramid-app's web process.
+    5438,  # test-pyramid-app's Postgres service.
+    9201,  # test-pyramid-app's Elasticsearch service.
+    5675,  # test-pyramid-app's RabbitMQ service.
+    15675,  # test-pyramid-app's RabbitMQ service.
     5050,  # Publisher Account Test Site's web process.
     9000,  # BioPub's web process.
 )
