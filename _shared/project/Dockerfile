@@ -16,6 +16,10 @@ RUN apk add --no-cache --virtual \
 
 COPY . .
 
+{% if cookiecutter.get("_directory") == "pyramid-app" %}
+EXPOSE {{ cookiecutter.port }}
+{% endif %}
+
 USER hypothesis
 
 CMD /usr/bin/supervisord -c /var/lib/hypothesis/conf/supervisord.conf
