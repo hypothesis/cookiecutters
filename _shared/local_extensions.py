@@ -38,7 +38,7 @@ UNAVAILABLE_PORTS = (
     4000,  # Report's Metabase service.
     5435,  # Report's metabase-postgres service.
     5436,  # Report's Postgres service.
-    5437,  # cookiecutter-pypackage-test's Postgres service.
+    5437,  # test-pypackage's Postgres service.
     9202,  # cookiecutter-pyapp-test's Elasticsearch service.
     9800,  # test-pyramid-app's web process.
     5438,  # test-pyramid-app's Postgres service.
