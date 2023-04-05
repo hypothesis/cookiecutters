@@ -1,11 +1,21 @@
+import pytest
 from webtest import TestApp
 
 from {{ cookiecutter.package_name }}.app import create_app
 
 
-def test_it():
-    app = TestApp(create_app({}))
-
+def test_index(app):
     response = app.get("/")
 
-    assert response.json == {"Hello": "Pyramid!"}
+    assert response.text == "Hello world!"
+
+
+def test_status(app):
+    response = app.get("/_status")
+
+    assert response.json == {"status": "okay"}
+
+
+@pytest.fixture
+def app():
+    return TestApp(create_app({}))
