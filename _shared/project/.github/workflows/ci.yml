@@ -92,9 +92,9 @@ jobs:
       {% endif %}
       {% if job in ["tests", "functests"] and cookiecutter.get("postgres") == "yes" %}
       - name: Create test database
-        run: psql -U postgres -h localhost -p {{ cookiecutter['__postgres_port'] }} -c 'CREATE DATABASE {{ cookiecutter.package_name }}_test'
+        run: psql -U postgres -h localhost -p {{ cookiecutter['__postgres_port'] }} -c 'CREATE DATABASE {{ cookiecutter.package_name }}_{{ job }}'
       {% endif %}
-      {% if cookiecutter.get("frontend") == "yes" %}
+      {% if cookiecutter.get("frontend") == "yes" and job in ["tests", "functests"] %}
       - run: yarn install --frozen-lockfile
       - run: yarn build
       {% endif %}
@@ -120,23 +120,7 @@ jobs:
   {% endfor %}
   {% if cookiecutter.get("frontend") == "yes" %}
   Frontend:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Cache the node_modules dir
-      uses: actions/cache@v3
-      with:
-        path: node_modules
-        key: {% raw %}${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock') }}{% endraw +%}
-    - name: Install
-      run: yarn install --frozen-lockfile
-    - name: Format
-      run: make frontend-checkformatting
-    - name: Lint
-      run: make frontend-lint
-    - name: Test
-      run: make frontend-test
+    uses: ./.github/workflows/frontend.yml
   {% endif %}
   {% if include_exists(".github/workflows/ci.yml") %}
     {{- include(".github/workflows/ci.yml", indent=2) -}}

@@ -1,4 +1,5 @@
 pip-tools
+pip-sync-faster
 -r prod.txt
 factory-boy
 {% if cookiecutter.get("_directory") == "pyramid-app" %}

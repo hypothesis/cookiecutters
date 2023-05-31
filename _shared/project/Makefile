@@ -12,6 +12,15 @@ services: python
 	@docker compose $(args)
 {% endif %}
 
+{% if cookiecutter.get("postgres") == "yes" %}
+.PHONY: db
+$(call help,make db,initialize the DB and upgrade it to the latest migration)
+db: args?=upgrade head
+db: python
+	@tox -qe dev --run-command 'python bin/make_db'
+	@tox -qe dev  --run-command 'alembic -c conf/alembic.ini $(args)'
+
+{% endif %}
 .PHONY: devdata
 {% if cookiecutter.get("devdata") == "yes" %}
 $(call help,make devdata,load development data and environment variables)
@@ -28,7 +37,7 @@ dev: python
 {% if cookiecutter.get("_directory") == "pyramid-app" %}
 
 .PHONY: web
-$(call help,make web,run just a web worker)
+$(call help,make web,run just a single web worker process)
 web: python
 	@pyenv exec tox -qe dev --run-command 'gunicorn --bind :{{ cookiecutter.port }} --workers 1 --reload --timeout 0 --paste conf/development.ini'
 {% endif %}
@@ -55,55 +64,21 @@ sql: python
 $(call help,make lint,"lint the code and print any warnings")
 lint: python
 	@pyenv exec tox -qe lint
-{% if cookiecutter.get("frontend") == "yes" %}
-
-.PHONY: frontend-lint
-$(call help,make frontend-lint,"lint the frontend code")
-sure: frontend-lint
-frontend-lint:
-	@yarn lint
-	{% if cookiecutter.get("__frontend_typechecking") == "yes" %}
-	@yarn typecheck
-	{% endif %}
-{% endif %}
 
 .PHONY: format
 $(call help,make format,"format the code")
 format: python
 	@pyenv exec tox -qe format
-{% if cookiecutter.get("frontend") == "yes" %}
-
-.PHONY: frontend-format
-$(call help,make frontend-format,"format the frontend code")
-frontend-format:
-	@yarn format
-{% endif %}
 
 .PHONY: checkformatting
 $(call help,make checkformatting,"crash if the code isn't correctly formatted")
 checkformatting: python
 	@pyenv exec tox -qe checkformatting
-{% if cookiecutter.get("frontend") == "yes" %}
-
-.PHONY: frontend-checkformatting
-sure: frontend-checkformatting
-$(call help,make frontend-checkformatting,"check the frontend code formatting")
-frontend-checkformatting:
-	@yarn checkformatting
-{% endif %}
 
 .PHONY: test
 $(call help,make test,"run the unit tests in Python {{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}")
 test: python
 	@pyenv exec tox -qe tests
-{% if cookiecutter.get("frontend") == "yes" %}
-
-.PHONY: frontend-test
-sure: frontend-test
-$(call help,make frontend-test,"run the frontend tests")
-frontend-test:
-	@yarn test $(ARGS)
-{% endif %}
 
 {% for python_version in python_versions()|rest %}
 {% set target = 'test-py%s'|format(python_version|pyformat(PyFormats.MAJOR_MINOR_FMT)) %}
@@ -159,7 +134,7 @@ sure:
 # requirements/%.txt filename, for example requirements/foo.txt -> foo.
 requirements/%.txt: requirements/%.in
 	@touch -a $(subst prod.txt,dev.txt,$@)
-	@tox -qe $(subst prod,dev,$(basename $(notdir $@))) --run-command 'pip --quiet --disable-pip-version-check install pip-tools'
+	@tox -qe $(subst prod,dev,$(basename $(notdir $@))) --run-command 'pip --quiet --disable-pip-version-check install pip-tools pip-sync-faster'
 	@tox -qe $(subst prod,dev,$(basename $(notdir $@))) --run-command 'pip-compile --allow-unsafe --quiet $(args) $<'
 
 # Inform make of the dependencies between our requirements files so that it
@@ -219,34 +194,18 @@ docker-run:
 .PHONY: clean
 $(call help,make clean,"delete temporary files etc")
 clean:
-	@rm -rf build dist .tox
+	@rm -rf build dist .tox .coverage coverage .eslintcache node_modules supervisord.log supervisord.pid yarn-error.log
 	@find . -path '*/__pycache__*' -delete
 	@find . -path '*.egg-info*' -delete
 {% if include_exists("make_clean") %}
 	{{- include("make_clean") -}}
 {% endif %}
 
-{% if cookiecutter.get("frontend") == "yes" %}
-dev: build/manifest.json
-devdata: build/manifest.json
-shell: build/manifest.json
-functests: build/manifest.json
-build/manifest.json:
-	@yarn build
-
-frontend-format: node_modules/.uptodate
-frontend-checkformatting: node_modules/.uptodate
-frontend-lint: node_modules/.uptodate
-frontend-test: node_modules/.uptodate
-build/manifest.json: node_modules/.uptodate
-node_modules/.uptodate: package.json yarn.lock
-	@echo installing javascript dependencies
-	@yarn install
-	@touch $@
-
-{% endif %}
 .PHONY: python
 python:
 	@bin/make_python
 
 -include {{ cookiecutter.package_name }}.mk
+{% if cookiecutter.get("frontend") == "yes" %}
+-include frontend.mk
+{% endif %}

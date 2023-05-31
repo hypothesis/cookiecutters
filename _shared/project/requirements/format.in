@@ -1,4 +1,5 @@
 pip-tools
+pip-sync-faster
 black
 isort
 {% if include_exists("requirements/format.in") %}

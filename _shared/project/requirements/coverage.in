@@ -1,4 +1,5 @@
 pip-tools
+pip-sync-faster
 coverage[toml]
 {% if include_exists("requirements/coverage.in") %}
     {{- include("requirements/coverage.in") -}}

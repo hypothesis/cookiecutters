@@ -105,6 +105,11 @@ load-plugins = [
 fail-on = ["C", "E", "F", "I", "R", "W"]
 
 [tool.pylint.messages_control]
+ignore-paths=[
+{% if include_exists("pylint/ignore-paths") %}
+    {{- include("pylint/ignore-paths", indent=4) -}}
+{% endif %}
+]
 enable = [
     "bad-inline-option",
     "deprecated-pragma",
@@ -164,7 +169,7 @@ output-format = "colorized"
 score = "no"
 
 [tool.hdev]
-project_name = "{{ cookiecutter.name }}"
+project_name = "{{ cookiecutter.slug }}"
 project_type = "{{ cookiecutter.__hdev_project_type }}"
 {% if include_exists("pyproject.toml") %}
 

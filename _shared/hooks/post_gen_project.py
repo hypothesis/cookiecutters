@@ -20,7 +20,7 @@ def remove_conditional_files():
     {% endif %}
 
     {% if cookiecutter.get("postgres") != "yes" %}
-    paths_to_remove.extend(["bin/create-db"])
+    paths_to_remove.extend(["bin/create-db", "bin/make_db", "conf/alembic.ini"])
     {% endif %}
 
     {% if cookiecutter.get("devdata") != "yes" %}

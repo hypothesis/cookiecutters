@@ -6,6 +6,7 @@ newrelic
 {% if cookiecutter.get("postgres") == "yes" %}
 sqlalchemy
 psycopg2
+alembic
 {% endif %}
 {% if include_exists("requirements/prod.in") %}
     {{- include("requirements/prod.in") -}}

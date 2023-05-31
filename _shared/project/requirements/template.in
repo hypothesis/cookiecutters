@@ -1,4 +1,5 @@
 pip-tools
+pip-sync-faster
 cookiecutter
 {% if include_exists("requirements/template.in") %}
     {{- include("requirements/template.in") -}}
