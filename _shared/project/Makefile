@@ -188,6 +188,9 @@ docker-run:
 {% if cookiecutter.get("_directory") == "pyramid-app" %}
 		-p {{ cookiecutter.port }}:{{ cookiecutter.port }} \
 {% endif %}
+{% if include_exists("make_docker_run") %}
+	{{- include("make_docker_run") -}}
+{% endif %}
 		{{ cookiecutter.__docker_namespace }}/{{ cookiecutter.slug }}:$(DOCKER_TAG)
 
 {% endif %}
