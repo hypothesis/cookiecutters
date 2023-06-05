@@ -166,32 +166,15 @@ template: python
 	@pyenv exec tox -e template -- $$(if [ -n "$${template+x}" ]; then echo "--template $$template"; fi) $$(if [ -n "$${checkout+x}" ]; then echo "--checkout $$checkout"; fi) $$(if [ -n "$${directory+x}" ]; then echo "--directory $$directory"; fi)
 
 {% if cookiecutter.get("docker") == "yes" %}
-DOCKER_TAG = dev
-
 .PHONY: docker
 $(call help,make docker,"make the app's docker image")
 docker:
-	@git archive --format=tar HEAD | docker build -t hypothesis/{{ cookiecutter.slug }}:$(DOCKER_TAG) -
+	@git archive --format=tar HEAD | docker build -t hypothesis/{{ cookiecutter.slug }}:dev -
 
 .PHONY: docker-run
 $(call help,make docker-run,"run the app's docker image")
 docker-run:
-	@docker run \
-		--add-host host.docker.internal:host-gateway \
-{% if has_services() %}
-		--net {{ cookiecutter.__docker_network }} \
-{% endif %}
-		--env-file .docker.env \
-{% if cookiecutter.get("devdata") == "yes" %}
-		--env-file .devdata.env \
-{% endif %}
-{% if cookiecutter.get("_directory") == "pyramid-app" %}
-		-p {{ cookiecutter.port }}:{{ cookiecutter.port }} \
-{% endif %}
-{% if include_exists("make_docker_run") %}
-	{{- include("make_docker_run") -}}
-{% endif %}
-		{{ cookiecutter.__docker_namespace }}/{{ cookiecutter.slug }}:$(DOCKER_TAG)
+	@bin/make_docker_run
 
 {% endif %}
 .PHONY: clean

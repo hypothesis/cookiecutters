@@ -19,7 +19,7 @@
     "docker": ["no", "yes"],
     "__postgres_port": "{{ random_port_number() }}",
     "__docker_namespace": "{{ cookiecutter.github_owner }}",
-    "__docker_network": "{{ cookiecutter.package_name }}_default",
+    "__docker_network": "{{ cookiecutter.slug }}_default",
     "__github_url": "https://github.com/{{ cookiecutter.github_owner }}/{{ cookiecutter.slug }}",
     "_extensions": ["local_extensions.LocalJinja2Extension"],
     "_directory": "pyramid-app",

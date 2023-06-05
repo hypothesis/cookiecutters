@@ -12,7 +12,7 @@ def remove_conditional_files():
     paths_to_remove = []
 
     {% if cookiecutter.get("docker") != "yes" %}
-    paths_to_remove.extend(["docker.env", "Dockerfile"])
+    paths_to_remove.extend(["docker.env", "Dockerfile", "bin/make_docker_run"])
     {% endif %}
 
     {% if cookiecutter.get("frontend") != "yes" %}
