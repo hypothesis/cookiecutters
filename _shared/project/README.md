@@ -104,6 +104,15 @@
     {% endif %}
     make help
     ```
+    {% if include_exists("hacking/setting_up.md") %}
+
+    {{ include("hacking/setting_up.md") -}}
+    {% else %}
+    {% if cookiecutter._directory == "pyramid-app" %}
+
+    To run {{ cookiecutter.name }} locally run `make dev` and visit http://localhost:{{ cookiecutter.port }}.
+    {% endif %}
+    {% endif %}
 {% endmacro %}
 
 {%- macro releasing() %}
