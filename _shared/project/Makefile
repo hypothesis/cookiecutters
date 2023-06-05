@@ -76,7 +76,11 @@ checkformatting: python
 	@pyenv exec tox -qe checkformatting
 
 .PHONY: test
+{% if cookiecutter.get("_directory") in ["pyapp", "pyramid-app"] %}
+$(call help,make test,"run the unit tests")
+{% else %}
 $(call help,make test,"run the unit tests in Python {{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}")
+{% endif %}
 test: python
 	@pyenv exec tox -qe tests
 
@@ -98,7 +102,11 @@ coverage: python
 {% endif %}
 
 .PHONY: functests
+{% if cookiecutter.get("_directory") in ["pyapp", "pyramid-app"] %}
+$(call help,make functests,"run the functional tests")
+{% else %}
 $(call help,make functests,"run the functional tests in Python {{ python_versions()|first|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}")
+{% endif %}
 functests: python
 	@pyenv exec tox -qe functests
 
