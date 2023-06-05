@@ -1,0 +1,17 @@
+#!/bin/bash
+docker run \
+    --add-host host.docker.internal:host-gateway \
+{% if has_services() %}
+    --net {{ cookiecutter.__docker_network }} \
+{% endif %}
+    --env-file .docker.env \
+{% if cookiecutter.get("devdata") == "yes" %}
+    --env-file .devdata.env \
+{% endif %}
+{% if cookiecutter.get("_directory") == "pyramid-app" %}
+    -p {{ cookiecutter.port }}:{{ cookiecutter.port }} \
+{% endif %}
+{% if include_exists("make_docker_run") %}
+    {{- include("make_docker_run", indent=4) -}}
+{% endif %}
+    {{ cookiecutter.__docker_namespace }}/{{ cookiecutter.slug }}:dev
