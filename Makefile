@@ -12,12 +12,12 @@ test sure: test-pypackage test-pyapp test-pyramid-app
 
 .PHONY: test-pypackage
 test-pypackage:
-	@bin/make_test pypackage console_script=yes db=yes devdata=yes pypi=yes services=yes
+	@bin/make_test pypackage console_script=yes devdata=yes postgres=yes pypi=yes
 
 .PHONY: test-pyapp
 test-pyapp:
-	@bin/make_test pyapp db=yes devdata=yes docker=yes services=yes
+	@bin/make_test pyapp devdata=yes docker=yes postgres=yes
 
 .PHONY: test-pyramid-app
 test-pyramid-app:
-	@bin/make_test pyramid-app db=yes devdata=yes docker=yes frontend=yes services=yes
+	@bin/make_test pyramid-app devdata=yes docker=yes frontend=yes postgres=yes
