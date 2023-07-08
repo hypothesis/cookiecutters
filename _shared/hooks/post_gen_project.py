@@ -26,6 +26,16 @@ def remove_conditional_files():
         "conf/alembic.ini",
         "{{ cookiecutter.package_name }}/migrations/env.py",
         "{{ cookiecutter.package_name }}/migrations/script.py.mako",
+        "{{ cookiecutter.package_name }}/db.py",
+        "{{ cookiecutter.package_name }}/models/__init__.py",
+        "tests/factories/__init__.py",
+        "tests/factories/factoryboy_sqlalchemy_session.py",
+    ])
+    {% endif %}
+
+    {% if not (cookiecutter.get("postgres") == "yes" or cookiecutter._directory == "pyramid-app") %}
+    paths_to_remove.extend([
+        "tests/conftest.py",
     ])
     {% endif %}
 
@@ -150,13 +160,18 @@ def main():
         template_ignore_patterns.extend([
             "{{ cookiecutter.package_name }}/__init__.py",
             "{{ cookiecutter.package_name }}/app.py",
+            "{{ cookiecutter.package_name }}/db.py",
+            "{{ cookiecutter.package_name }}/models/__init__.py",
             "Dockerfile",
             "package.json",
             "yarn.lock",
             ".docker.env",
             "{{ cookiecutter.package_name }}/pshell.py",
             "tests/__init__.py",
+            "tests/conftest.py",
+            "tests/factories/__init__.py",
             "tests/unit/__init__.py",
+            "tests/unit/conftest.py",
             "tests/unit/{{ cookiecutter.package_name }}/__init__.py",
             "tests/unit/{{ cookiecutter.package_name }}/app_test.py",
             "tests/functional/__init__.py",

@@ -8,7 +8,21 @@ jobs:
   Test_pypackage:
     name: Test pypackage
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15.3-alpine
+        ports:
+        - 5432:5432
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options:
+          --health-cmd pg_isready
+          --health-interval 1s
     steps:
+      - name: Create test databases
+        run: |
+          psql -U postgres -h localhost -c 'CREATE DATABASE my_python_package_tests'
+          psql -U postgres -h localhost -c 'CREATE DATABASE my_python_package_functests'
       - uses: actions/checkout@v3
       - name: Install Python 3.10
         uses: actions/setup-python@v4
@@ -37,7 +51,21 @@ jobs:
   Test_pyapp:
     name: Test pyapp
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15.3-alpine
+        ports:
+        - 5432:5432
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options:
+          --health-cmd pg_isready
+          --health-interval 1s
     steps:
+      - name: Create test databases
+        run: |
+          psql -U postgres -h localhost -c 'CREATE DATABASE my_python_app_tests'
+          psql -U postgres -h localhost -c 'CREATE DATABASE my_python_app_functests'
       - uses: actions/checkout@v3
       - name: Install Python 3.10
         uses: actions/setup-python@v4
@@ -54,7 +82,21 @@ jobs:
   Test_pyramid-app:
     name: Test pyramid-app
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15.3-alpine
+        ports:
+        - 5432:5432
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options:
+          --health-cmd pg_isready
+          --health-interval 1s
     steps:
+      - name: Create test databases
+        run: |
+          psql -U postgres -h localhost -c 'CREATE DATABASE my_pyramid_app_tests'
+          psql -U postgres -h localhost -c 'CREATE DATABASE my_pyramid_app_functests'
       - uses: actions/checkout@v3
       - name: Install Python 3.10
         uses: actions/setup-python@v4
