@@ -1,12 +1,14 @@
 services:
   {% if cookiecutter.get("postgres") == "yes" %}
   postgres:
-    image: postgres:{{ cookiecutter.get("__postgres_version", "11.5-alpine") }}
+    image: postgres:{{ cookiecutter.get("__postgres_version", "15.3-alpine") }}
     ports:
       - "127.0.0.1:{{ cookiecutter['__postgres_port'] }}:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 1s
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
     {% if include_exists("docker-compose/postgres.yml") %}
       {{- include("docker-compose/postgres.yml", indent=4) -}}
     {% endif %}
