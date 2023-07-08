@@ -166,7 +166,6 @@ def main():
             "package.json",
             "yarn.lock",
             ".docker.env",
-            "{{ cookiecutter.package_name }}/pshell.py",
             "tests/__init__.py",
             "tests/conftest.py",
             "tests/factories/__init__.py",
