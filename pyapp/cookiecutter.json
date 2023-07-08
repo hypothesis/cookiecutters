@@ -14,6 +14,7 @@
     "devdata": ["no", "yes"],
     "postgres": ["no", "yes"],
     "docker": ["no", "yes"],
+    "__postgres_version": "15.3-alpine",
     "__postgres_port": "{{ random_port_number() }}",
     "__docker_namespace": "{{ cookiecutter.github_owner }}",
     "__docker_network": "{{ cookiecutter.slug }}_default",
