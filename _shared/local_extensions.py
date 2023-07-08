@@ -124,6 +124,7 @@ class LocalJinja2Extension(Extension):
                 "PyFormats": PyFormats,
                 "random_port_number": self.random_port_number,
                 "has_services": self.has_services,
+                "pytest_plugins": self.pytest_plugins,
             }
         )
         environment.filters.update(
@@ -218,6 +219,29 @@ class LocalJinja2Extension(Extension):
         return cookiecutter.get("postgres") == "yes" or self.include_exists(
             context, "docker-compose/services.yml"
         )
+
+    @pass_context
+    def pytest_plugins(self, context, tests_type):
+        """Return the list of pytest plugins that should be activated for this project."""
+        cookiecutter = context["cookiecutter"]
+
+        plugins = []
+        directory = cookiecutter["_directory"]
+        postgres = cookiecutter.get("postgres") == "yes"
+        is_app = directory in ["pyapp", "pyramid-app"]
+
+        if directory == "pyramid-app":
+            plugins.append("tests.pytest_plugins.pyramid")
+        if is_app and postgres:
+            plugins.append("tests.pytest_plugins.db")
+        if tests_type == "unit" and is_app and postgres:
+            plugins.append("tests.unit.pytest_plugins.db")
+        if tests_type == "unit" and directory == "pyramid-app":
+            plugins.append("tests.unit.pytest_plugins.pyramid")
+        if tests_type == "functional" and is_app and postgres:
+            plugins.append("tests.functional.pytest_plugins.db")
+
+        return plugins
 
     def _open(self, context, path):
         """Return the file at `path` in the project's .cookiecutter/includes dir."""

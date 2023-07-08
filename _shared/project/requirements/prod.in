@@ -7,6 +7,10 @@ newrelic
 sqlalchemy
 psycopg2
 alembic
+{% if cookiecutter.get("_directory") == "pyramid-app" %}
+pyramid-tm
+zope.sqlalchemy
+{% endif %}
 {% endif %}
 {% if include_exists("requirements/prod.in") %}
     {{- include("requirements/prod.in") -}}

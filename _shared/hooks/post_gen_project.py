@@ -20,7 +20,18 @@ def remove_conditional_files():
     {% endif %}
 
     {% if cookiecutter.get("postgres") != "yes" %}
-    paths_to_remove.extend(["bin/create-db", "bin/make_db", "conf/alembic.ini"])
+    paths_to_remove.extend([
+        "bin/create-db",
+        "bin/make_db",
+        "conf/alembic.ini",
+        "{{ cookiecutter.package_name }}/db.py",
+        "{{ cookiecutter.package_name }}/models/__init__.py",
+        "tests/factories/__init__.py",
+        "tests/factories/factoryboy_sqlalchemy_session.py",
+        "tests/pytest_plugins/db.py",
+        "tests/unit/pytest_plugins/db.py",
+        "tests/functional/pytest_plugins/db.py",
+    ])
     {% endif %}
 
     {% if cookiecutter.get("devdata") != "yes" %}
@@ -144,12 +155,14 @@ def main():
         template_ignore_patterns.extend([
             "{{ cookiecutter.package_name }}/__init__.py",
             "{{ cookiecutter.package_name }}/app.py",
+            "{{ cookiecutter.package_name }}/models/__init__.py",
             "Dockerfile",
             "package.json",
             "yarn.lock",
             ".docker.env",
             "{{ cookiecutter.package_name }}/pshell.py",
             "tests/__init__.py",
+            "tests/factories/__init__.py",
             "tests/unit/__init__.py",
             "tests/unit/{{ cookiecutter.package_name }}/__init__.py",
             "tests/unit/{{ cookiecutter.package_name }}/app_test.py",
