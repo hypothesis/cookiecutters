@@ -7,7 +7,7 @@ $(call help,make help,print this help message)
 .PHONY: services
 {% if has_services() %}
 $(call help,make services,start the services that the app needs)
-services: args?=up -d
+services: args?=up -d --wait
 services: python
 	@docker compose $(args)
 {% endif %}
