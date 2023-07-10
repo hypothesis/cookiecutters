@@ -1,6 +1,6 @@
 import json
 import os.path
-from collections import OrderedDict
+from collections import OrderedDict  # cookiecutter crashes without this import.
 from fnmatch import fnmatch
 from os import getcwd, remove, rmdir, walk
 from pathlib import Path
@@ -93,7 +93,7 @@ def write_cookiecutter_json_file():
 def compile_requirements_files():
     """Compile the project's requirements/*.txt files."""
     print("=> Compiling requirements files")
-    run(["make", "requirements"])
+    run(["make", "requirements"], check=True)
 
 
 def create_git_repo():
