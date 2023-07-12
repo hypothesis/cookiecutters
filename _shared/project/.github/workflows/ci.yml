@@ -56,6 +56,8 @@ jobs:
         image: postgres:{{ cookiecutter.get("__postgres_version", "15.3-alpine") }}
         ports:
         - {{ cookiecutter['__postgres_port'] }}:5432
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
       {% endif %}
       {% if include_exists(".github/workflows/ci/services.yml") %}
         {{- include(".github/workflows/ci/services.yml", indent=6) -}}
