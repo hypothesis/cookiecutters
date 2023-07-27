@@ -8,6 +8,10 @@ sqlalchemy
 psycopg2
 alembic
 {% endif %}
+{% if cookiecutter.get("_directory") == "pyramid-app" and cookiecutter.get("postgres") == "yes" %}
+pyramid-tm
+zope.sqlalchemy
+{% endif %}
 {% if include_exists("requirements/prod.in") %}
     {{- include("requirements/prod.in") -}}
 {% endif %}

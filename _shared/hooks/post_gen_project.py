@@ -24,6 +24,8 @@ def remove_conditional_files():
         "bin/create-db",
         "bin/make_db",
         "conf/alembic.ini",
+        "{{ cookiecutter.package_name }}/db.py",
+        "{{ cookiecutter.package_name }}/models/__init__.py",
         "{{ cookiecutter.package_name }}/migrations/env.py",
         "{{ cookiecutter.package_name }}/migrations/script.py.mako",
     ])
@@ -150,6 +152,8 @@ def main():
         template_ignore_patterns.extend([
             "{{ cookiecutter.package_name }}/__init__.py",
             "{{ cookiecutter.package_name }}/app.py",
+            "{{ cookiecutter.package_name }}/db.py",
+            "{{ cookiecutter.package_name }}/models/__init__.py",
             "Dockerfile",
             "package.json",
             "yarn.lock",
