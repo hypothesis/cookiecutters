@@ -12,7 +12,7 @@ services: python
 	@docker compose $(args)
 {% endif %}
 
-{% if cookiecutter.get("postgres") == "yes" %}
+{% if cookiecutter.get("_directory") == "pyramid-app" and cookiecutter.get("postgres") == "yes" %}
 .PHONY: db
 $(call help,make db,initialize the DB and upgrade it to the latest migration)
 db: args?=upgrade head
