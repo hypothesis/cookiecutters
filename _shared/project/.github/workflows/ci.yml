@@ -29,7 +29,6 @@ on:
       - '.docker.env'
 {% endif %}
       - '**/.gitignore'
-      - '.python-version'
 {% if cookiecutter.get("docker") == "yes" %}
       - 'Dockerfile'
 {% endif %}
