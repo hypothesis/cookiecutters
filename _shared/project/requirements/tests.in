@@ -1,8 +1,14 @@
 pip-tools
 pip-sync-faster
 -r prod.txt
-coverage[toml]
 pytest
+pytest-coverage
+{% if cookiecutter.get("__parallel_unit_tests") %}
+pytest-xdist[psutil]
+{% if cookiecutter.get("postgres") == "yes" %}
+filelock
+{% endif %}
+{% endif %}
 factory-boy
 pytest-factoryboy
 h-matchers

@@ -47,7 +47,7 @@ jobs:
     {% if job == 'coverage' %}
     needs: tests
     {% endif %}
-    runs-on: ubuntu-latest
+    runs-on: {{ cookiecutter["__" + job + "_runner_type"] }}
     {% if job in ["tests", "functests"] and has_services() %}
     services:
       {% if cookiecutter.get("postgres") == "yes" %}
@@ -110,6 +110,10 @@ jobs:
       - run: tox -e checkformatting
       {% else %}
       - run: tox -e {{ job }}
+      {% if job == 'tests' %}
+        env:
+          COVERAGE_FILE: .coverage.{% raw %}${{ matrix.python-version }}{% endraw +%}
+      {% endif %}
       {% endif %}
       {% if job == 'tests' %}
       - name: Upload coverage file

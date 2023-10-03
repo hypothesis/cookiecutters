@@ -7,6 +7,9 @@ updates:
     day: "sunday"
     time: "00:00"
     timezone: "Europe/London"
+{% if include_exists(".github/dependabot/pip/tail.yml") %}
+  {{- include(".github/dependabot/pip/tail.yml", indent=2) -}}
+{% endif %}
 {% if cookiecutter.get("frontend") == "yes" %}
 - package-ecosystem: "npm"
   directory: "/"
@@ -15,6 +18,9 @@ updates:
     day: "sunday"
     time: "00:00"
     timezone: "Europe/London"
+{% if include_exists(".github/dependabot/npm/tail.yml") %}
+  {{- include(".github/dependabot/npm/tail.yml", indent=2) -}}
+{% endif %}
 {% endif %}
 {% if cookiecutter.get("docker") == "yes" %}
 - package-ecosystem: "docker"
@@ -28,4 +34,7 @@ updates:
     # Only send PRs for patch versions of Python.
     - dependency-name: "python"
       update-types: [ "version-update:semver-major", "version-update:semver-minor" ]
+{% if include_exists(".github/dependabot/docker/tail.yml") %}
+  {{- include(".github/dependabot/docker/tail.yml", indent=2) -}}
+{% endif %}
 {% endif %}
