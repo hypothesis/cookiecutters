@@ -3,7 +3,7 @@
     "package_name": "{{ cookiecutter.name.lower().replace(' ', '_').replace('-', '_') }}",
     "slug": "{{ cookiecutter.package_name.replace('_', '-') }}",
     "short_description": "A web app written using the Pyramid framework.",
-    "python_version": "3.10.6",
+    "python_version": "3.10.13",
     "port": "{{ random_port_number() }}",
     "github_owner": "hypothesis",
     "visibility": ["public", "private"],
