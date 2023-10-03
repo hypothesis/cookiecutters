@@ -3,7 +3,7 @@ pip-sync-faster
 -r tests.txt
 -r functests.txt
 toml # Needed for pydocstyle to support pyproject.toml.
-pylint
+pylint>=3.0.0
 pydocstyle
 pycodestyle
 {% if include_exists("requirements/lint.in") %}

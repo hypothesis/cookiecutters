@@ -28,5 +28,11 @@
     "__ignore__": "",
     "__target_dir__": "",
     "__copyright_year": "2022",
-    "_jinja2_env_vars": {"lstrip_blocks": true, "trim_blocks": true}
+    "_jinja2_env_vars": {"lstrip_blocks": true, "trim_blocks": true},
+    "__parallel_unit_tests": false,
+    "__format_runner_type": "ubuntu-latest",
+    "__lint_runner_type": "ubuntu-latest",
+    "__tests_runner_type": "ubuntu-latest",
+    "__coverage_runner_type": "ubuntu-latest",
+    "__functests_runner_type": "ubuntu-latest"
 }
