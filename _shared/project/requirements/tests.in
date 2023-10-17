@@ -2,7 +2,7 @@ pip-tools
 pip-sync-faster
 -r prod.txt
 pytest
-pytest-coverage
+pytest-cov
 {% if cookiecutter.get("__parallel_unit_tests") %}
 pytest-xdist[psutil]
 {% if cookiecutter.get("postgres") == "yes" %}
