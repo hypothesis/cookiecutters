@@ -17,7 +17,8 @@ def test_help():
 
 
 def test_version(capsys):
-    exit_code = cli(["--version"])
+    with pytest.raises(SystemExit) as exc_info:
+        cli(["--version"])
 
     assert capsys.readouterr().out.strip() == version("{{ cookiecutter.slug }}")
-    assert not exit_code
+    assert not exc_info.value.code
