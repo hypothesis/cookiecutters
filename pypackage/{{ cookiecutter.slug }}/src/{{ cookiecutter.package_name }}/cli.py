@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 from importlib.metadata import version
 
 
-def cli(_argv=None):  # pylint:disable=inconsistent-return-statements
+def cli(argv=None):
     parser = ArgumentParser()
     parser.add_argument(
         "-v",
@@ -11,4 +11,4 @@ def cli(_argv=None):  # pylint:disable=inconsistent-return-statements
         version=version("{{ cookiecutter.slug }}"),
     )
 
-    args = parser.parse_args(_argv)
+    _args = parser.parse_args(argv)
