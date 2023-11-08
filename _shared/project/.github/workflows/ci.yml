@@ -57,6 +57,11 @@ jobs:
         - {{ cookiecutter['__postgres_port'] }}:5432
         env:
           POSTGRES_HOST_AUTH_METHOD: trust
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
       {% endif %}
       {% if include_exists(".github/workflows/ci/services.yml") %}
         {{- include(".github/workflows/ci/services.yml", indent=6) -}}
