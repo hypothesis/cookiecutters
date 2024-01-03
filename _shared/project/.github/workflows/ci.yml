@@ -66,6 +66,9 @@ jobs:
       {% if include_exists(".github/workflows/ci/services.yml") %}
         {{- include(".github/workflows/ci/services.yml", indent=6) -}}
       {% endif %}
+      {% if include_exists(".github/workflows/ci/services_" + job + ".yml") %}
+        {{- include(".github/workflows/ci/services_" + job + ".yml", indent=6) -}}
+      {% endif %}
     {% endif %}
     {% if cookiecutter._directory == 'pypackage' and (job == 'tests' or job == 'functests') %}
     strategy:
