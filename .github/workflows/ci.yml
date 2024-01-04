@@ -58,6 +58,18 @@ jobs:
   Test_pyramid-app:
     name: Test pyramid-app
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15.3-alpine
+        ports:
+        - 5439:5432
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - name: Install Python 3.10
@@ -71,4 +83,8 @@ jobs:
           git config --global user.email "<>"
       - name: Add .github/scripts to $PATH
         run: realpath .github/scripts/ >> $GITHUB_PATH
+      - name: Create test databases
+        run: |
+          psql -U postgres -h localhost -p 5439 -c 'CREATE DATABASE my_pyramid_app_tests'
+          psql -U postgres -h localhost -p 5439 -c 'CREATE DATABASE my_pyramid_app_functests'
       - run: make test-pyramid-app

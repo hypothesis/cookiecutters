@@ -17,14 +17,17 @@ services: python
 $(call help,make db,initialize the DB and upgrade it to the latest migration)
 db: args?=upgrade head
 db: python
-	@tox -qe dev --run-command 'python bin/make_db'
-	@tox -qe dev  --run-command 'alembic $(args)'
+	@tox -qe dev --run-command 'python3 -m {{ cookiecutter.package_name }}.scripts.init_db --create --stamp'
+	@tox -qe dev --run-command 'alembic $(args)'
 
 {% endif %}
 .PHONY: devdata
 {% if cookiecutter.get("devdata") == "yes" %}
 $(call help,make devdata,load development data and environment variables)
 devdata: python
+{% if cookiecutter.get("_directory") == "pyramid-app" and cookiecutter.get("postgres") == "yes" %}
+	@tox -qe dev --run-command 'python3 -m {{ cookiecutter.package_name }}.scripts.init_db --create --stamp'
+{% endif %}
 	@tox -qe dev --run-command 'python bin/make_devdata'
 {% endif %}
 {% if cookiecutter.get("_directory") in ["pyapp", "pyramid-app"] %}

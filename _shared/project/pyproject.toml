@@ -60,6 +60,9 @@ omit = [
     {% if cookiecutter.get("_directory") == "pyapp" %}
     "*/{{ cookiecutter.package_name }}/app.py",
     {% endif %}
+    {% if cookiecutter.get("_directory") == "pyramid-app" and cookiecutter.get("postgres") == "yes" %}
+    "*/{{ cookiecutter.package_name }}/scripts/init_db.py",
+    {% endif %}
     {% if include_exists("coverage/omit") %}
         {{- include("coverage/omit", indent=4) -}}
     {% endif %}
