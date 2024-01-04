@@ -5,9 +5,6 @@ pytest
 pytest-cov
 {% if cookiecutter.get("__parallel_unit_tests") %}
 pytest-xdist[psutil]
-{% if cookiecutter.get("postgres") == "yes" %}
-filelock
-{% endif %}
 {% endif %}
 factory-boy
 pytest-factoryboy
