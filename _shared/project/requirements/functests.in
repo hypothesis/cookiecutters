@@ -6,6 +6,7 @@ pytest
 factory-boy
 pytest-factoryboy
 h-matchers
+h-testkit
 {% if cookiecutter.get("_directory") == "pyramid-app" %}
 webtest
 {% endif %}
