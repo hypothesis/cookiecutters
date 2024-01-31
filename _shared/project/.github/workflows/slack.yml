@@ -1,7 +1,7 @@
 name: Slack
 on:
   workflow_run:
-    workflows: [CI]
+    workflows: [CI{% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}, Deploy{% endif %}]
     types: [completed]
     branches: [main]
 jobs:
