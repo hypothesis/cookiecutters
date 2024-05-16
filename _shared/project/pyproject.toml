@@ -173,6 +173,25 @@ good-names = [
 output-format = "colorized"
 score = "no"
 
+[tool.mypy]
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+disable_error_code = [
+  {% if include_exists("mypy/disables") %}
+    {{- include("mypy/disables", indent=4) -}}
+  {% endif %}
+]
+
+[[tool.mypy.overrides]]
+module= [
+  # Don't try to typecheck the tests for now
+  "tests.*",
+]
+ignore_errors = true
+
+
 [tool.hdev]
 project_name = "{{ cookiecutter.slug }}"
 project_type = "{{ cookiecutter.__hdev_project_type }}"
