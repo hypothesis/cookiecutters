@@ -179,9 +179,11 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 
 disable_error_code = [
-  {% if include_exists("mypy/disables") %}
-    {{- include("mypy/disables", indent=4) -}}
-  {% endif %}
+    # https://mypy.readthedocs.io/en/stable/error_code_list.html#code-import-untyped
+    "import-untyped",
+    {% if include_exists("mypy/disables") %}
+        {{- include("mypy/disables", indent=4) -}}
+    {% endif %}
 ]
 
 [[tool.mypy.overrides]]
