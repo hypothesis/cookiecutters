@@ -42,7 +42,7 @@ on:
   schedule:
   - cron: '0 1 * * *'
 jobs:
-  {% for job in ['format', 'lint', 'tests', 'coverage', 'functests'] %}
+  {% for job in ['format', 'lint', 'typecheck', 'tests', 'coverage', 'functests'] %}
   {{ job|capitalize }}:
     {% if job == 'coverage' %}
     needs: tests
