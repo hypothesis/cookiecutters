@@ -1,3 +1,8 @@
+-r prod.txt
+
+pip-tools
+pip-sync-faster
+
 mypy
 {% if include_exists("requirements/typecheck.in") %}
     {{- include("requirements/typecheck.in") -}}

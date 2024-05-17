@@ -160,6 +160,7 @@ requirements/dev.txt: requirements/prod.txt
 requirements/tests.txt: requirements/prod.txt
 requirements/functests.txt: requirements/prod.txt
 requirements/lint.txt: requirements/tests.txt requirements/functests.txt
+requirements/typecheck.txt: requirements/prod.txt
 
 # Add a requirements target so you can just run `make requirements` to
 # re-compile *all* the requirements files at once.
