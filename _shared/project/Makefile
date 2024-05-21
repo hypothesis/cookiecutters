@@ -131,9 +131,9 @@ $(call help,make sure,"make sure that the formatting$(comma) linting and tests a
 sure: python
 sure:
 {% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
-	@pyenv exec tox --parallel -qe 'checkformatting,lint,tests,coverage,functests'
+	@pyenv exec tox --parallel -qe 'checkformatting,lint,typecheck,tests,coverage,functests'
 {% else %}
-	@pyenv exec tox --parallel -qe 'checkformatting,lint,tests,py{{ "{" }}{{ python_versions()|rest|pyformat(PyFormats.MAJOR_MINOR_FMT)|separator(",") }}{{ "}" }}-tests,coverage,functests,py{{ "{" }}{{ python_versions()|rest|pyformat(PyFormats.MAJOR_MINOR_FMT)|separator(",") }}{{ "}" }}-functests'
+	@pyenv exec tox --parallel -qe 'checkformatting,lint,typecheck,tests,py{{ "{" }}{{ python_versions()|rest|pyformat(PyFormats.MAJOR_MINOR_FMT)|separator(",") }}{{ "}" }}-tests,coverage,functests,py{{ "{" }}{{ python_versions()|rest|pyformat(PyFormats.MAJOR_MINOR_FMT)|separator(",") }}{{ "}" }}-functests'
 {% endif %}
 
 {% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}
