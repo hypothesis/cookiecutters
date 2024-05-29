@@ -1,4 +1,37 @@
 #!/bin/bash
 # Return the list of all cookiecuttered repos in the hypothesis GitHub organization.
 
-gh api -X GET search/repositories --paginate -f 'q=cookiecutter.json in:readme org:hypothesis archived:false -repo:hypothesis/hdev' -q '.items | .[] | .full_name'
+# This GitHub API search query has stopped returning the correct results.
+#
+# Until we can figure out how to fix it lets have this script just print a
+# hard-coded list of repos so that update_repos.yml can still send cookiecutter
+# update PRs to our repos, even if it means we have to manually maintain this
+# hard-coded list.
+# gh api -X GET search/repositories --paginate -f 'q=cookiecutter.json in:readme org:hypothesis archived:false -repo:hypothesis/hdev' -q '.items | .[] | .full_name'
+echo hypothesis/checkmatelib
+echo hypothesis/commando
+echo hypothesis/data-tasks
+echo hypothesis/dependabot-alerts
+echo hypothesis/gh-pr-upsert
+echo hypothesis/gha-token
+echo hypothesis/h-api
+echo hypothesis/h-assets
+echo hypothesis/h-matchers
+echo hypothesis/h-periodic
+echo hypothesis/h-pyramid-sentry
+echo hypothesis/h-testkit
+echo hypothesis/h-vialib
+echo hypothesis/lms
+echo hypothesis/pip-sync-faster
+echo hypothesis/pyramid-googleauth
+echo hypothesis/pyramid-sanity
+echo hypothesis/report
+echo hypothesis/test-pyapp
+echo hypothesis/test-pypackage
+echo hypothesis/test-pyramid-app
+echo hypothesis/testpilot
+echo hypothesis/tox-envfile
+echo hypothesis/tox-faster
+echo hypothesis/tox-recreate
+echo hypothesis/via
+
