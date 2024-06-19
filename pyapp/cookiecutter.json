@@ -32,5 +32,6 @@
     "__typecheck_runner_type": "ubuntu-latest",
     "__tests_runner_type": "ubuntu-latest",
     "__coverage_runner_type": "ubuntu-latest",
-    "__functests_runner_type": "ubuntu-latest"
+    "__functests_runner_type": "ubuntu-latest",
+    "__scheduled_workflows": ""
 }

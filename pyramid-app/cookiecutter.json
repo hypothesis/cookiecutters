@@ -36,5 +36,6 @@
     "__tests_runner_type": "ubuntu-latest",
     "__coverage_runner_type": "ubuntu-latest",
     "__functests_runner_type": "ubuntu-latest",
-    "__gunicorn_bind": false
+    "__gunicorn_bind": false,
+    "__scheduled_workflows": ""
 }

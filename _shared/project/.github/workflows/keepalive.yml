@@ -15,7 +15,7 @@
 name: Keepalive
 on:
   workflow_run:
-    workflows: [CI]
+    workflows: [CI{{ cookiecutter.get("__scheduled_workflows", "") }}]
     types: [completed]
     branches: [main]
 jobs:
