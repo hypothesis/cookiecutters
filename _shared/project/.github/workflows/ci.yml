@@ -126,6 +126,7 @@ jobs:
         with:
           name: coverage
           path: .coverage.*
+          include-hidden-files: true
       {% endif %}
   {% endfor %}
   {% if cookiecutter.get("frontend") == "yes" %}
