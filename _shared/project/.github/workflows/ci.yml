@@ -106,7 +106,7 @@ jobs:
       {% endif %}
       {% if job == 'coverage' %}
       - name: Download coverage files
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: coverage
       {% endif %}
@@ -122,7 +122,7 @@ jobs:
       {% endif %}
       {% if job == 'tests' %}
       - name: Upload coverage file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: .coverage.*
