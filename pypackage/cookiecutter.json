@@ -21,7 +21,6 @@
     "__copyright_year": "{% now 'utc', '%Y' %}",
     "_extensions": ["local_extensions.LocalJinja2Extension"],
     "_directory": "pypackage",
-    "__hdev_project_type": "library",
     "__ignore__": "",
     "__target_dir__": "",
     "_jinja2_env_vars": {"lstrip_blocks": true, "trim_blocks": true},
