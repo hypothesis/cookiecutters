@@ -1,7 +1,11 @@
 pip-tools
 pip-sync-faster
+{% if cookiecutter.get("linter") == "ruff" %}
+ruff
+{% else %}
 black
 isort
+{% endif %}
 {% if include_exists("requirements/format.in") %}
     {{- include("requirements/format.in") -}}
 {% endif %}
