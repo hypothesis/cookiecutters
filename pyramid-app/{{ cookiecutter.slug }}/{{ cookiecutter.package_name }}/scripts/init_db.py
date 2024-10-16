@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # mypy: disable-error-code="attr-defined"
 """
+
 Initialize the DB.
 
 Usage:
@@ -8,7 +9,12 @@ Usage:
     python3 -m {{ cookiecutter.package_name }}.scripts.init_db --help
 
 """
+
+{% if cookiecutter.get("linter") == "pylint" %}
 # pylint:disable=import-outside-toplevel,unused-import
+{% else %}
+# ruff: noqa: PLC0415, F401
+{% endif %}
 import argparse
 import logging
 from os import environ
@@ -117,7 +123,10 @@ def main():
         stamped = is_stamped(engine)
 
     if args.create:
-        if stamped:  # pylint:disable=possibly-used-before-assignment
+        {% if cookiecutter.get("linter") == "pylint" %}
+        # pylint:disable=possibly-used-before-assignment
+        {% endif %}
+        if stamped:
             log.warning("Not creating tables because the DB is stamped by Alembic")
         else:
             create(engine)
