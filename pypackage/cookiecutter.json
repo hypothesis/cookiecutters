@@ -13,6 +13,7 @@
     "create_github_repo": ["no", "yes"],
     "dependabot_pip_interval": ["monthly", "weekly", "daily"],
     "pypi": ["no", "yes"],
+    "linter": ["pylint", "ruff"],
     "__postgres_version": "15.3-alpine",
     "__postgres_port": "{{ random_port_number() }}",
     "__entry_point": "{{ cookiecutter.slug }}",

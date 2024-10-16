@@ -2,10 +2,14 @@ pip-tools
 pip-sync-faster
 -r tests.txt
 -r functests.txt
+{% if cookiecutter.get("linter") == "ruff" %}
+ruff
+{% else %}
 toml # Needed for pydocstyle to support pyproject.toml.
 pylint>=3.0.0
 pydocstyle
 pycodestyle
+{% endif %}
 {% if include_exists("requirements/lint.in") %}
     {{- include("requirements/lint.in") -}}
 {% endif %}
