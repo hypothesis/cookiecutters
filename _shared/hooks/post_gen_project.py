@@ -57,6 +57,10 @@ def remove_conditional_files():
     paths_to_remove.extend([".github/workflows/pypi.yml"])
     {% endif %}
 
+    {% if cookiecutter.get("linter") == "ruff" %}
+    paths_to_remove.extend(["tests/pyproject.toml", "setup.cfg"])
+    {% endif %}
+
     {% if cookiecutter.get("console_script") != "yes" %}
     paths_to_remove.extend(["src/{{ cookiecutter.package_name }}/__main__.py"])
     paths_to_remove.extend(["src/{{ cookiecutter.package_name }}/cli.py"])
@@ -102,6 +106,10 @@ def remove_project_files(target_dir):
         ".cookiecutter/includes/setuptools/install_requires",
         ".cookiecutter/includes/setuptools/console_scripts",
         ".cookiecutter/includes/setuptools/entry_points",
+        {% if cookiecutter.get("linter") == "ruff" %}"tests/pyproject.toml",{% endif +%}
+        {% if cookiecutter.get("linter") == "ruff" %}"setup.cfg",{% endif +%}
+        {% if cookiecutter.get("linter") == "ruff" %}".cookiecutter/includes/setup.cfg",{% endif +%}
+        {% if cookiecutter.get("linter") == "ruff" %}".cookiecutter/includes/pycodestyle",{% endif +%}
     ]
 
     for path in paths_to_remove:

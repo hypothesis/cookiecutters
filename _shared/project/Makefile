@@ -68,6 +68,18 @@ $(call help,make lint,"lint the code and print any warnings")
 lint: python
 	@pyenv exec tox -qe lint
 
+{% if cookiecutter.get("linter") == "ruff" %}
+.PHONY: fix
+$(call help,make fix,"apply fixes to resolve lint violations")
+fix: python
+	@pyenv exec tox -qe lint -- ruff check --fix-only {{ cookiecutter.package_name}} tests bin
+
+.PHONY: noqa
+$(call help,make noqa,"add noqa comments to suppress lint violations")
+noqa: python
+	@pyenv exec tox -qe lint -- ruff check --add-noqa {{ cookiecutter.package_name}} tests bin
+
+{% endif %}
 .PHONY: typecheck
 $(call help,make typecheck,"type check the code and print any warnings")
 typecheck: python

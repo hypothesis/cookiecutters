@@ -59,6 +59,112 @@ filterwarnings = [
     {% endif %}
 ]
 
+{% if cookiecutter.get("linter") == "ruff" %}
+[tool.ruff]
+target-version = "py{{ python_versions()|oldest|pyformat(PyFormats.MAJOR_MINOR_FMT) }}"
+{% if include_exists("ruff/top_level/tail") %}
+{{ include("ruff/top_level/tail") -}}
+{% endif %}
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+{% if include_exists("ruff/lint/ignore") %}
+{{ include("ruff/lint/ignore", indent=4) -}}
+{% else %}
+    "UP",    # pyupgrade
+    "YTT",   # flake8-2020 (checks for misuse of sys.version or sys.version_info
+    "ANN",   # flake8-annotations (checks for absence of type annotations on functions)
+    "ASYNC", # flake8-async (checks for asyncio-related problems)
+    "S",     # flake8-bandit (checks for security issues)
+    "FBT",   # flake8-boolean-trap (checks for the "boolean trap" anti-pattern)
+    "B",     # flake8-bugbear (checks for bugs and design problems)
+    "A",     # flake8-builtins (checks for builtins being overridden)
+    "CPY",   # flake8-copyright (checks for missing copyright notices)
+    "C4",    # flake8-comprehensions (helps write better list/set/dict comprehensions)
+    "DTZ",   # flake8-datetimez (checks for usages of unsafe naive datetime class)
+    "T10",   # flake8-debugger (checks for set traces etc)
+    "EM",    # flake8-errmsg (checks for error message formatting issues)
+    "EXE",   # flake8-executable (checks for incorrect executable permissions and shebangs)
+    "FA",    # flake8-future-annotations (checks for missing from __future__ import annotations)
+    "ISC",   # flake8-implicit-str-concat (checks for style problems with string literal concatenation)
+    "ICN",   # flake8-import-conventions (checks for unconventional imports and aliases)
+    "LOG",   # flake8-logging (checks for issues with using the logging module)
+    "G",     # flake8-logging-format (enforce usage of `extra` in logging calls)
+    "INP",   # flake8-no-pep420 (checks for missing __init__.py files)
+    "PIE",   # flake8-pie (miscellaneous)
+    "T20",   # flake8-print (checks for print and pprint statements)
+    "PT",    # flake8-pytest-style (checks for common pytest style and consistency issues)
+    "RSE",   # flake8-raise (checks for issues with raising exceptions)
+    "RET",   # flake8-return (checks for issues with return values)
+    "SLOT",  # flake8-slots (requires __slots__ in subclasses of immutable types)
+    "SIM",   # flake8-simplify (lots of code simplification checks)
+    "TID",   # flake8-tidy-imports (checks for issues with imports)
+    "TC",    # flake8-type-checking (checks for type checking imports that aren't in TYPE_CHECKING blocks)
+    "ARG",   # flake8-unused-arguments (checks for unused arguments)
+    "PTH",   # flake8-use-pathlib (checks for cases with pathlib could be used but isn't)
+    "TD",    # flake8-todos (enforces good style for "# TODO" comments)
+    "FIX",   # flake8-fixme (checks for FIXMEs, TODOs, HACKs, etc)
+    "ERA",   # eradicate (checks for commented-out code)
+    "PGH",   # pygrep-hooks (miscellaneous)
+    "PL",    # pylint (miscellaneous rules from pylint)
+    "TRY",   # tryceratops (various try/except-related checks)
+    "FLY",   # flynt (checks for old-style %-formatted strings)
+    "PERF",  # perflint (checks for performance anti-patterns)
+    "FURB",  # refurb (various "refurbishing and modernizing" checks)
+    "DOC",   # pydoclint (docstring checks)
+    "RUF",   # Ruff-specific rules
+    "COM",   # flake8-commas (we used a code formatter so we don't need a linter to check this)
+    "D100","D101","D102","D103","D104","D105","D106","D107", # Missing docstrings.
+    "D202", # "No blank lines allowed after function docstring" conflicts with the Ruff code formatter.
+    # "Multi-line docstring summary should start at the first line" (D212)
+    # and "Multi-line docstring summary should start at the second line" (D213).
+    # These two rules conflict with each other so you have to disable one of them.
+    # How about we disable them both? PEP 257 says either approach is okay:
+    #
+    # > The summary line may be on the same line as the opening quotes or on
+    # > the next line.
+    # >
+    # > https://peps.python.org/pep-0257/#multi-line-docstrings
+    "D212", "D213",
+    "E501", # line-too-long (we use the code formatter so we don't need the linter to check line lengths for us).
+    "PLR2004", # "Magic value used in comparison", this mostly triggers false-positives related to HTTP status codes.
+    "PLR6301", # Method could be a function/classmethod/static method (doesn't use self)
+    "RET501", # Do not explicitly return None if it's the only possible return value.
+    "RET504", # Unnecessary assignment before return statement.
+{% if include_exists("ruff/lint/ignore/tail") %}
+{{ include("ruff/lint/ignore/tail", indent=4) -}}
+{% endif %}
+{% endif %}
+]
+
+[tool.ruff.lint.per-file-ignores]
+{% if include_exists("ruff/lint/per_file_ignores") %}
+{{ include("ruff/lint/per_file_ignores") -}}
+{% else %}
+"tests/*" = [
+    # Just disable name style checking for the tests, because we
+    # frequently use lots of argument names that don't conform.
+    # For example we frequently create pytest fixtures that aren't named in
+    # snake_case, such as a fixture that returns a mock of the FooBar class would
+    # be named FooBar in CamelCase.
+    "N",
+    "PLR0913", # Too many arguments. Tests often have lots of arguments.
+    "PLR0917", # Too many positional arguments. Tests often have lots of arguments.
+    "PLR0904", # Too many public methods. Test classes often have lots of test methods.
+]
+"__init__.py" = [
+    "F401", # Ignore unused import errors on __init__ files to avoid having to add either a noqa stament or an __all__ declaration.
+]
+{% if include_exists("ruff/lint/per_file_ignores/tail") %}
+{{ include("ruff/lint/per_file_ignores/tail") -}}
+{% endif %}
+{% endif %}
+{% if include_exists("ruff/tail") %}
+
+{{ include("ruff/tail") -}}
+{% endif %}
+{% else %}
 [tool.pydocstyle]
 ignore = [
     # Missing docstrings.
@@ -89,6 +195,7 @@ ignore = [
 {{ include("pydocstyle/ignores", indent=4) -}}
 {% endif %}
 ]
+{% endif %}
 
 [tool.coverage.run]
 branch = true
@@ -127,6 +234,7 @@ exclude_also = [
 {% endif %}
 ]
 
+{% if cookiecutter.get("linter") != "ruff" %}
 [tool.isort]
 multi_line_output = 3
 include_trailing_comma = true
@@ -221,6 +329,7 @@ good-names = [
 [tool.pylint.reports]
 output-format = "colorized"
 score = "no"
+{% endif %}
 
 [tool.mypy]
 allow_untyped_globals = true
