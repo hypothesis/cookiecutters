@@ -202,9 +202,16 @@ disable_error_code = [
 ]
 
 [[tool.mypy.overrides]]
-module= [
-  # Don't try to typecheck the tests for now
+module = [
+{% if include_exists("mypy/ignore_errors_modules") %}
+    {{- include("mypy/ignore_errors_modules", indent=2) -}}
+{% else %}
+  # Don't try to typecheck the tests for now.
   "tests.*",
+{% endif %}
+{% if include_exists("mypy/ignore_errors_modules/tail") %}
+   {{- include("mypy/ignore_errors_modules/tail", indent=2) -}}
+{% endif %}
 ]
 ignore_errors = true
 {% if include_exists("pyproject.toml") %}
