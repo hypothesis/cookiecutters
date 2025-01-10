@@ -78,6 +78,17 @@ show_missing = true
 precision = 2
 fail_under = 100.00
 skip_covered = true
+exclude_also = [
+{% if include_exists("coverage/exclude_also") %}
+    {{- include("coverage/exclude_also", indent=4) -}}
+{% else %}
+    # `if TYPE_CHECKING:` blocks are only executed while running mypy.
+    "if TYPE_CHECKING:",
+{% if include_exists("coverage/exclude_also/tail") %}
+    {{- include("coverage/exclude_also/tail", indent=4) -}}
+{% endif %}
+{% endif %}
+]
 
 [tool.isort]
 multi_line_output = 3
