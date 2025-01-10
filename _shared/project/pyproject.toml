@@ -163,10 +163,6 @@ show_missing = true
 precision = 2
 fail_under = 100.00
 skip_covered = true
-exclude_also = [
-    # # TYPE_CHECKING block is only executed while running mypy
-    "if TYPE_CHECKING:"
-]
 
 {% if cookiecutter.get("linter") != "ruff" %}
 [tool.isort]
@@ -272,7 +268,6 @@ pretty = true
 warn_unused_configs = true
 warn_redundant_casts = true
 warn_unused_ignores = true
-check_untyped_defs = true
 
 disable_error_code = [
     # https://mypy.readthedocs.io/en/stable/error_code_list.html#code-import-untyped
@@ -283,12 +278,9 @@ disable_error_code = [
 ]
 
 [[tool.mypy.overrides]]
-module = [
+module= [
     # Don't try to typecheck the tests for now
     "tests.*",
-    {% if include_exists("mypy/ignored_modules") %}
-        {{- include("mypy/ignored_modules", indent=4) -}}
-    {% endif %}
 ]
 ignore_errors = true
 {% if include_exists("pyproject.toml") %}
