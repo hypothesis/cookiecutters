@@ -24,11 +24,13 @@ filterwarnings = [
 
 {% if cookiecutter.get("linter") == "ruff" %}
 [tool.ruff]
-target-version = "py311"
+target-version = "py{{ python_versions()|oldest|pyformat(PyFormats.MAJOR_MINOR_FMT) }}"
 line-length = 88
+{% if include_exists("ruff/exclude") %}
 exclude = [
-    "tests/bdd/steps/_compiled_feature_steps.py",
+{{ include("ruff/exclude", indent=4) -}}
 ]
+{% endif %}
 
 [tool.ruff.lint]
 select = [
@@ -41,7 +43,6 @@ select = [
   "SLF", # flake-8-self
   "N", # https://docs.astral.sh/ruff/rules/#pep8-naming-n
   "F", # https://docs.astral.sh/ruff/rules/unused-import/
-
   "RUF100", # unused-noqa
 ]
 
@@ -70,7 +71,7 @@ ignore = [
     "D212",
     "D213",
 
-    # We use Black to format our code automatically, so we don't need PyLint to
+    # We use Black to format our code automatically, so we don't need Ruff to
     # check formatting for us.
     "E501", # line-too-long
 
@@ -92,7 +93,7 @@ ignore = [
     "N",
     # We are more lax about  comment formatting in the tests
     "D",
-    
+
     "PLR0913",
 
     # Lots of test methods don't use self, but we still want to group our tests
@@ -102,7 +103,7 @@ ignore = [
     "PLR0917", # too-many-arguments
     "PLC2701", # private import
     "PLR0904", # too-many-public-methods
-] 
+]
 # Ignore unused import errors on __init__ files to avoid having to add either a noqa stament or an __all__ declaration.
 "__init__.py" = ["F401"]
 {% else %}
@@ -279,8 +280,8 @@ disable_error_code = [
 
 [[tool.mypy.overrides]]
 module= [
-    # Don't try to typecheck the tests for now
-    "tests.*",
+  # Don't try to typecheck the tests for now
+  "tests.*",
 ]
 ignore_errors = true
 {% if include_exists("pyproject.toml") %}
