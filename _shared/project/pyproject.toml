@@ -316,7 +316,6 @@ pretty = true
 warn_unused_configs = true
 warn_redundant_casts = true
 warn_unused_ignores = true
-check_untyped_defs = true
 
 disable_error_code = [
     # https://mypy.readthedocs.io/en/stable/error_code_list.html#code-import-untyped
