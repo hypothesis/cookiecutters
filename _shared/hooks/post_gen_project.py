@@ -9,6 +9,20 @@ from subprocess import run
 
 
 def remove_conditional_files():
+    """
+    Remove certain files from the temporary directory so they don't get added to the project.
+
+    When updating a project with `make template` the main() function below
+    renders the cookiecutter to a temporary directory then copies files over
+    from the temporary directory into the project's directory.
+
+    Before copying files over it calls this remove_conditional_files() function
+    to remove certain files from the temporary directory so they don't get
+    added to the project.
+
+    For example we only want the generated `Dockerfile` to be added to projects
+    that have the cookiecutter's "docker" option enabled.
+    """
     paths_to_remove = []
 
     {% if cookiecutter.get("docker") != "yes" %}
@@ -64,6 +78,40 @@ def remove_conditional_files():
                 remove(path)
             except IsADirectoryError:
                 rmdir(path)
+
+
+def remove_project_files(target_dir):
+    """
+    Remove certain files from the project.
+
+    When running `make template` to update a project with the latest changes
+    from the cookiecutter the cookiecutter includes the ability to remove
+    certain files from the project.
+
+    For example our cookiecutter used to create a tests/pyproject.toml file in
+    projects containing a special pylint config to be used when linting the
+    tests. After we moved away from pylint this tests/pyproject.toml file was
+    no longer needed.  It was helpful to have `make template` automate removing
+    the file.
+
+    This feature should be using sparingly because it's not generally safe: it
+    could remove files that contain uncommitted changes.
+
+    """
+    paths_to_remove = [
+        ".cookiecutter/setuptools/install_requires",
+        ".cookiecutter/setuptools/console_scripts",
+        ".cookiecutter/setuptools/entry_points",
+    ]
+
+    for path in paths_to_remove:
+        path_ = target_dir / path
+
+        if os.path.exists(path_):
+            try:
+                remove(path_)
+            except IsADirectoryError:
+                rmdir(path_)
 
 
 def write_cookiecutter_json_file():
@@ -197,6 +245,8 @@ def main():
 
                 target_path.parent.mkdir(parents=True, exist_ok=True)
                 move(source_path, target_path)
+
+        remove_project_files(target_dir)
     else:
         # We're creating a new project for the first time.
         write_cookiecutter_json_file()
