@@ -3,9 +3,48 @@
 requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools_scm]
+[project]
+dynamic = ["version"]
+name = "{{ cookiecutter.slug }}"
+description = "{{ cookiecutter.short_description }}"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Intended Audience :: Developers",
+]
+requires-python = ">={{ python_versions()|oldest|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}"
+dependencies = [
+  {% if cookiecutter.get("postgres") == "yes" %}
+  "sqlalchemy",
+  "psycopg2",
+  {% endif %}
+  {% if include_exists("pyproject.toml/dependencies") %}
+    {{- include("pyproject.toml/dependencies", indent=4) -}}
+  {% endif %}
+]
 
+[project.urls]
+Repository = "{{ cookiecutter.__github_url }}"
+Issues = "{{ cookiecutter.__github_url }}/issues"
+Changelog = "{{ cookiecutter.__github_url }}/releases"
+{% if include_exists("pyproject.toml/scripts") %}
+
+[project.scripts]
+{{ include("pyproject.toml/scripts") -}}
+{% elif cookiecutter.get("console_script") == "yes" %}
+
+[project.scripts]
+{{ cookiecutter.__entry_point }} = "{{ cookiecutter.package_name }}.cli:cli"
 {% endif %}
+
+[tool.setuptools_scm]
+{% endif %}
+{% if include_exists("pyproject.toml/tail") %}
+
+{{ include("pyproject.toml/tail") -}}
+{% endif %}
+
 [tool.pytest.ini_options]
 addopts = "-q"
 filterwarnings = [
