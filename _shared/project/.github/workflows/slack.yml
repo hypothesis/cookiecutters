@@ -1,7 +1,7 @@
 name: Slack
 on:
   workflow_run:
-    workflows: [CI{% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}, Deploy{% endif %}]
+    workflows: [CI{% if cookiecutter._directory in ['pyapp', 'pyramid-app'] %}, Deploy{% endif %}{{ cookiecutter.get("__slack_notifications_workflows", "") }}]
     types: [completed]
     branches: [main]
 jobs:
