@@ -39,6 +39,7 @@ Changelog = "{{ cookiecutter.__github_url }}/releases"
 
 {% endif %}
 [tool.setuptools_scm]
+
 {% endif %}
 {% if include_exists("pyproject.toml/tail") %}
 
