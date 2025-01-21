@@ -36,8 +36,8 @@ Changelog = "{{ cookiecutter.__github_url }}/releases"
 
 [project.scripts]
 {{ cookiecutter.__entry_point }} = "{{ cookiecutter.package_name }}.cli:cli"
-{% endif %}
 
+{% endif %}
 [tool.setuptools_scm]
 {% endif %}
 {% if include_exists("pyproject.toml/tail") %}
