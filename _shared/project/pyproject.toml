@@ -28,12 +28,11 @@ dependencies = [
 Repository = "{{ cookiecutter.__github_url }}"
 Issues = "{{ cookiecutter.__github_url }}/issues"
 Changelog = "{{ cookiecutter.__github_url }}/releases"
-{% if include_exists("pyproject.toml/scripts") %}
 
+{% if include_exists("pyproject.toml/scripts") %}
 [project.scripts]
 {{ include("pyproject.toml/scripts") -}}
 {% elif cookiecutter.get("console_script") == "yes" %}
-
 [project.scripts]
 {{ cookiecutter.__entry_point }} = "{{ cookiecutter.package_name }}.cli:cli"
 
@@ -42,7 +41,6 @@ Changelog = "{{ cookiecutter.__github_url }}/releases"
 
 {% endif %}
 {% if include_exists("pyproject.toml/tail") %}
-
 {{ include("pyproject.toml/tail") }}
 {% endif %}
 [tool.pytest.ini_options]
