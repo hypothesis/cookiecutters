@@ -150,7 +150,7 @@ class LocalJinja2Extension(Extension):
         try:
             with self._open(context, path):
                 return True
-        except (FileNotFoundError, IsADirectoryError):
+        except (FileNotFoundError, IsADirectoryError, NotADirectoryError):
             return False
 
     @pass_context
