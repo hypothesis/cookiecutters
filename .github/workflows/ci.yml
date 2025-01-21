@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/checkout@v4
       - name: Install Python 3.12
         uses: actions/setup-python@v5
         with:
@@ -26,10 +31,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-      - name: Install Python 3.8
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.8'
       - run: python -m pip install cookiecutter 'tox<4'
       - name: Configure git
         run: |
@@ -43,10 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Python 3.11
+      - name: Install Python 3.13
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
       - run: python -m pip install cookiecutter 'tox<4'
       - name: Configure git
         run: |
@@ -72,10 +73,10 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      - name: Install Python 3.11
+      - name: Install Python 3.13
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
       - run: python -m pip install cookiecutter 'tox<4'
       - name: Configure git
         run: |
