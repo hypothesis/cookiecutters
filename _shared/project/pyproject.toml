@@ -43,8 +43,8 @@ Changelog = "{{ cookiecutter.__github_url }}/releases"
 {% if include_exists("pyproject.toml/tail") %}
 
 {{ include("pyproject.toml/tail") -}}
-{% endif %}
 
+{% endif %}
 [tool.pytest.ini_options]
 addopts = "-q"
 filterwarnings = [
