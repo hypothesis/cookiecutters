@@ -99,9 +99,9 @@ def remove_project_files(target_dir):
 
     """
     paths_to_remove = [
-        ".cookiecutter/setuptools/install_requires",
-        ".cookiecutter/setuptools/console_scripts",
-        ".cookiecutter/setuptools/entry_points",
+        ".cookiecutter/includes/setuptools/install_requires",
+        ".cookiecutter/includes/setuptools/console_scripts",
+        ".cookiecutter/includes/setuptools/entry_points",
     ]
 
     for path in paths_to_remove:
