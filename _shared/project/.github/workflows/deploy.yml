@@ -30,7 +30,7 @@ jobs:
     name: Docker Hub
     uses: hypothesis/workflows/.github/workflows/dockerhub.yml@main
     with:
-      Application: {% raw %}${{ github.event.repository.name }}{% endraw +%}
+      Application: {% if cookiecutter.get("__docker_hub_application_name") %}{{ cookiecutter.get("__docker_hub_application_name") }}{% else %}{% raw %}${{ github.event.repository.name }}{% endraw %}{% endif +%}
     secrets: inherit
   {% for job_id, environment in include_json(".github/workflows/environments.json", {}).items() %}
   {{ job_id }}:
