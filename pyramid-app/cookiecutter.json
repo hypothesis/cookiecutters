@@ -38,5 +38,6 @@
     "__functests_runner_type": "ubuntu-latest",
     "__gunicorn_bind": false,
     "__scheduled_workflows": "",
-    "__slack_notifications_workflows": ""
+    "__slack_notifications_workflows": "",
+    "__docker_hub_application_name": ""
 }
