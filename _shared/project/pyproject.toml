@@ -338,6 +338,9 @@ pretty = true
 warn_unused_configs = true
 warn_redundant_casts = true
 warn_unused_ignores = true
+{% if include_exists("mypy/top_level/tail") %}
+{{ include("mypy/top_level/tail") -}}
+{% endif %}
 
 disable_error_code = [
     # https://mypy.readthedocs.io/en/stable/error_code_list.html#code-import-untyped
