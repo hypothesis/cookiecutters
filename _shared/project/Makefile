@@ -49,9 +49,9 @@ web: python
 $(call help,make shell,"launch a Python shell in this project's virtualenv")
 shell: python
 {% if cookiecutter._directory == 'pyapp' %}
-	@pyenv exec tox -qe dev --run-command 'ipython'
+	@PYTHONPATH=$(CURDIR) TOX_TESTENV_PASSENV=PYTHONPATH pyenv exec tox -qe dev --run-command 'ipython'
 {% elif cookiecutter._directory == 'pyramid-app' %}
-	@pyenv exec tox -qe dev --run-command 'pshell conf/development.ini'
+	@PYTHONPATH=$(CURDIR) TOX_TESTENV_PASSENV=PYTHONPATH pyenv exec tox -qe dev --run-command 'pshell conf/development.ini'
 {% else %}
 	@pyenv exec tox -qe dev
 {% endif %}
