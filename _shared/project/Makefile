@@ -28,7 +28,7 @@ devdata: python
 {% if cookiecutter.get("_directory") == "pyramid-app" and cookiecutter.get("postgres") == "yes" %}
 	@tox -qe dev --run-command 'python3 -m {{ cookiecutter.package_name }}.scripts.init_db --create --stamp'
 {% endif %}
-	@tox -qe dev --run-command 'python bin/make_devdata'
+	@PYTHONPATH=$(CURDIR) TOX_TESTENV_PASSENV=PYTHONPATH tox -qe dev --run-command 'python bin/make_devdata'
 {% endif %}
 {% if cookiecutter.get("_directory") in ["pyapp", "pyramid-app"] %}
 
