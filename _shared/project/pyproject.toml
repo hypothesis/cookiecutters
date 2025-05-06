@@ -180,9 +180,6 @@ omit = [
     {% if cookiecutter.get("_directory") in ["pyapp", "pyramid-app"] %}
     "*/{{ cookiecutter.package_name }}/_version.py",
     {% endif %}
-    {% if cookiecutter.get("_directory") == "pyramid-app" %}
-    "*/{{ cookiecutter.package_name }}/_version.py",
-    {% endif %}
     {% if cookiecutter.get("_directory") == "pyramid-app" and cookiecutter.get("postgres") == "yes" %}
     "*/{{ cookiecutter.package_name }}/scripts/init_db.py",
     {% endif %}
