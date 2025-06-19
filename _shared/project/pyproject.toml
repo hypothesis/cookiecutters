@@ -44,7 +44,6 @@ Changelog = "{{ cookiecutter.__github_url }}/releases"
 {{ include("pyproject.toml/tail") }}
 {% endif %}
 [tool.pytest.ini_options]
-addopts = "-q"
 filterwarnings = [
     "error", # Fail the tests if there are any warnings.
     "ignore:^find_module\\(\\) is deprecated and slated for removal in Python 3.12; use find_spec\\(\\) instead$:DeprecationWarning:importlib",
