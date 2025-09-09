@@ -6,13 +6,11 @@ on:
     branches: [main]
 jobs:
   on-failure:
-    runs-on: ubuntu-latest
     if: {% raw %}${{ github.event.workflow_run.conclusion == 'failure' }}{% endraw +%}
-    steps:
-      - name: Post to Slack
-        uses: slackapi/slack-github-action@v1.24.0
-        with:
-          channel-id: 'C4K6M7P5E'
-          slack-message: "A workflow run failed\n*Repo:* `{% raw %}${{ github.event.repository.full_name }}{% endraw %}` ({% raw %}${{ github.event.repository.html_url }}{% endraw %})\n*Workflow:* {% raw %}${{ github.event.workflow.name }}{% endraw %} ({% raw %}${{ github.event.workflow.html_url }}{% endraw %})\n*Branch:* `{% raw %}${{ github.event.workflow_run.head_branch }}{% endraw %}`\n*Commit:* `{% raw %}${{ github.event.workflow_run.head_commit.id }}{% endraw %}`\n*Run:* {% raw %}${{ github.event.workflow_run.html_url }}{% endraw %}\n*Conclusion:* {% raw %}${{ github.event.workflow_run.conclusion }}{% endraw %}"
-        env:
-          SLACK_BOT_TOKEN: {% raw %}${{ secrets.SLACK_BOT_TOKEN }}{% endraw +%}
+    name: Post to Slack
+    uses: hypothesis/workflows/.github/workflows/slack.yml@main
+    with:
+      payload: |
+        channel: "C4K6M7P5E"
+        markdown_text: "Failed `{% raw %}${{ github.event.workflow_run.path }}{% endraw %}` run (attempt {% raw %}${{ github.event.workflow_run.run_attempt }}{% endraw %}) on `{% raw %}${{ github.event.workflow_run.head_branch }}{% endraw %}` in `{% raw %}${{ github.event.workflow_run.repository.full_name }}{% endraw %}`: {% raw %}${{ github.event.workflow_run.html_url }}{% endraw %}"
+    secrets: inherit
