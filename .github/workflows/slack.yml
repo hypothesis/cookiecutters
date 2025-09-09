@@ -7,7 +7,7 @@ on:
 jobs:
   on-failure:
     name: Post to Slack
-    uses: hypothesis/workflows/.github/workflows/dockerhub.yml@add-slack-workflow
+    uses: hypothesis/workflows/.github/workflows/slack.yml@add-slack-workflow
     with:
       message: "A workflow run failed\n*Repo:* `${{ github.event.repository.full_name }}` (${{ github.event.repository.html_url }})\n*Workflow:* ${{ github.event.workflow.name }} (${{ github.event.workflow.html_url }})\n*Branch:* `${{ github.event.workflow_run.head_branch }}`\n*Commit:* `${{ github.event.workflow_run.head_commit.id }}`\n*Run:* ${{ github.event.workflow_run.html_url }}\n*Conclusion:* ${{ github.event.workflow_run.conclusion }}"
     secrets: inherit
