@@ -6,6 +6,7 @@ on:
     branches: [main]
 jobs:
   on-failure:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     name: Post to Slack
     uses: hypothesis/workflows/.github/workflows/slack.yml@main
     with:
