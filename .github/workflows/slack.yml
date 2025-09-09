@@ -11,5 +11,5 @@ jobs:
     with:
       payload: |
         channel: "C09E7JB47KP"
-        markdown_text: "Failed `${{ github.event.workflow_run.path }}` run on `${{ github.event.workflow_run.head_branch }}` in `${{ github.event.workflow_run.repository.full_name }}`: ${{ github.event.workflow_run.html_url }} (run attempt ${{ github.event.workflow_run.run_attempt }})"
+        markdown_text: "Failed `${{ github.event.workflow_run.path }}` run on `${{ github.event.workflow_run.head_branch }}` in `${{ github.event.workflow_run.repository.full_name }}`: (run attempt ${{ github.event.workflow_run.run_attempt }}) [link](${{ github.event.workflow_run.html_url }})"
     secrets: inherit
