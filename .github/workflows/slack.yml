@@ -10,5 +10,5 @@ jobs:
     uses: hypothesis/workflows/.github/workflows/slack.yml@add-slack-workflow
     with:
       channel: "C4K6M7P5E"
-      markdown_text: "A workflow run failed\n__Repo:__ `${{ github.event.repository.full_name }}` (${{ github.event.repository.html_url }})  __Workflow:__ ${{ github.event.workflow.name }} (${{ github.event.workflow.html_url }})\n__Branch:__ `${{ github.event.workflow_run.head_branch }}`\n__Commit:__ `${{ github.event.workflow_run.head_commit.id }}`\n__Run:__ ${{ github.event.workflow_run.html_url }}\n__Conclusion:__ ${{ github.event.workflow_run.conclusion }}"
+      markdown_text: "A workflow run failed\n__Repo__ `${{ github.event.repository.full_name }}` (${{ github.event.repository.html_url }})  __Workflow__ ${{ github.event.workflow.name }} (${{ github.event.workflow.html_url }})\n__Branch__ `${{ github.event.workflow_run.head_branch }}`\n__Commit__ `${{ github.event.workflow_run.head_commit.id }}`\n__Run__ ${{ github.event.workflow_run.html_url }}\n__Conclusion__ ${{ github.event.workflow_run.conclusion }}"
     secrets: inherit
