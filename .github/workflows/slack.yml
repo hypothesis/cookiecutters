@@ -7,9 +7,9 @@ on:
 jobs:
   on-failure:
     name: Post to Slack
-    uses: hypothesis/workflows/.github/workflows/slack.yml@add-slack-workflow
+    uses: hypothesis/workflows/.github/workflows/slack.yml@main
     with:
       payload: |
-        channel: "C09E7JB47KP"
+        channel: "C4K6M7P5E"
         markdown_text: "Failed `${{ github.event.workflow_run.path }}` run (attempt ${{ github.event.workflow_run.run_attempt }}) on `${{ github.event.workflow_run.head_branch }}` in `${{ github.event.workflow_run.repository.full_name }}`: ${{ github.event.workflow_run.html_url }}"
     secrets: inherit
