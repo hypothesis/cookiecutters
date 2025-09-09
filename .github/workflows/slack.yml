@@ -11,5 +11,5 @@ jobs:
     with:
       payload: |
         channel: "C09E7JB47KP"
-        markdown_text: "**Testing**, `markdown`, [link](https://example.com)"
+        markdown_text: "Failed `${{ github.event.workflow.path }}` workflow run on `${{ github.event.workflow_run.head_branch }}` in **${{ github.event.repository.full_name }}**: ${{ github.event.workflow_run.html_url }}"
     secrets: inherit
