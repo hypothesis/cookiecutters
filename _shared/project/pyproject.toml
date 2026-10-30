@@ -16,7 +16,7 @@ classifiers = [
 requires-python = ">={{ python_versions()|oldest|pyformat(PyFormats.MAJOR_DOT_MINOR_FMT) }}"
 dependencies = [
   {% if cookiecutter.get("postgres") == "yes" %}
-  "sqlalchemy",
+  "sqlalchemy<2.1",
   "psycopg2",
   {% endif %}
   {% if include_exists("pyproject.toml/dependencies") %}
